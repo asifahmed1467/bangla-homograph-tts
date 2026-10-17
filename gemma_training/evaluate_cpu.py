@@ -8,7 +8,8 @@ Run:  python evaluate_cpu.py --out predictions_before.csv               (origina
 import argparse, os
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from common import messages, load_jsonl, score_rows
+from common import TAG, messages, load_jsonl, score_rows
+from two_tags import rewrite_max_two
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", default="unsloth/gemma-3-270m-it", help="base model (ignored when --adapter has base_model.txt)")
@@ -32,11 +33,16 @@ model.eval()
 
 
 @torch.no_grad()
-def rewrite(sentence):
+def model_rewrite(sentence):
     enc = tokenizer.apply_chat_template(messages(sentence), add_generation_prompt=True,
                                         return_tensors="pt", return_dict=True)
     out = model.generate(**enc, max_new_tokens=128, do_sample=False)
     return tokenizer.decode(out[0][enc["input_ids"].shape[1]:], skip_special_tokens=True).strip()
+
+
+def rewrite(sentence):
+    """at most 2 tags are corrected; from a 3rd tag on the sentence stays as typed (two_tags.py)"""
+    return rewrite_max_two(sentence, model_rewrite, TAG or "<hg>")
 
 
 if a.sentence:

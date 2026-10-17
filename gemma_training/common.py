@@ -56,27 +56,32 @@ def load_jsonl(path):
 
 def score_rows(rows, rewrite, out_csv, label):
     """Run `rewrite` on every test row, write a CSV of predictions and a JSON summary, print the scores."""
-    import csv, json
+    import csv, json, time
     from collections import defaultdict
     score = defaultdict(lambda: [0, 0])          # "homograph" / "plain" / "word:<w>" -> [correct, total]
     leaked = 0
+    started = time.perf_counter()
     with open(out_csv, "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["kind", "word", "variant", "input", "expected", "predicted", "correct"])
+        w.writerow(["kind", "word", "variant", "input", "expected", "predicted", "correct", "time_ms"])
         for i, r in enumerate(rows, 1):
+            t = time.perf_counter()
             pred = rewrite(r["input"])
+            ms = round(1000 * (time.perf_counter() - t))
             ok = pred == r["output"]             # strict: every letter must match, a copied tag is a mistake
             leaked += bool(TAG and TAG in pred)
             for k in (r["kind"], "word:" + r["word"]) if r["word"] else (r["kind"],):
                 score[k][0] += ok
                 score[k][1] += 1
-            w.writerow([r["kind"], r["word"], r["variant"], r["input"], r["output"], pred, int(ok)])
+            w.writerow([r["kind"], r["word"], r["variant"], r["input"], r["output"], pred, int(ok), ms])
             if i % 25 == 0:
                 print(f"{i}/{len(rows)}")
-    summary = {"label": label, "csv": out_csv, "tag_leaked": leaked, **{k: v for k, v in score.items()}}
+    secs = time.perf_counter() - started
+    summary = {"label": label, "csv": out_csv, "tag_leaked": leaked, "seconds": round(secs, 1), **{k: v for k, v in score.items()}}
     with open(out_csv.rsplit(".", 1)[0] + "_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=1)
-    for k, name in (("homograph", "homograph sentences fixed correctly"), ("plain", "plain sentences left unchanged")):
+    for k, name in (("two_tag", "two-tag sentences fixed correctly"), ("homograph", "homograph sentences fixed correctly"),
+                    ("plain", "plain sentences left unchanged")):
         if score[k][1]:
             c, n = score[k]
             print(f"{name}: {c}/{n} = {c / n:.1%}")
@@ -84,5 +89,6 @@ def score_rows(rows, rewrite, out_csv, label):
         print(f"answers that still contain the tag {TAG}: {leaked}")
     weak = sorted((c / n, k[5:]) for k, (c, n) in score.items() if k.startswith("word:") and c < n)
     print("words with mistakes:", ", ".join(f"{wd} ({acc:.0%})" for acc, wd in weak[:20]) or "none")
+    print(f"time: {secs:.1f} s for {len(rows)} sentences = {1000 * secs / max(1, len(rows)):.0f} ms per sentence")
     print("all predictions:", out_csv)
     return summary

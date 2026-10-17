@@ -11,12 +11,13 @@
                                                        (score the local model on the held-out test sentences)
 """
 import argparse, json, urllib.request
-from common import INSTRUCTION, strip_tags, load_jsonl, score_rows
+from common import INSTRUCTION, TAG, strip_tags, load_jsonl, score_rows
+from two_tags import rewrite_max_two
 
 URL = "http://127.0.0.1:8080/v1/chat/completions"
 
 
-def rewrite(sentence):
+def model_rewrite(sentence):
     body = {
         "messages": [{"role": "user", "content": INSTRUCTION + sentence}],
         "temperature": 0,            # always pick the most likely answer, no randomness
@@ -25,6 +26,11 @@ def rewrite(sentence):
     req = urllib.request.Request(URL, json.dumps(body).encode(), {"Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r:
         return strip_tags(json.load(r)["choices"][0]["message"]["content"].strip())
+
+
+def rewrite(sentence):
+    """at most 2 tags are corrected; from a 3rd tag on the sentence stays as typed (two_tags.py)"""
+    return rewrite_max_two(sentence, model_rewrite, TAG or "<hg>")
 
 
 ap = argparse.ArgumentParser()
