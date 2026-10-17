@@ -1,0 +1,25 @@
+.git
+.gitignore
+**/venv/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/data/processed.csv
+gemma_training/data/
+gemma_training/gemma_cpu_lora/
+gemma_training/smoke_lora/
+**/gemma_lora/
+**/checkpoints*/
+**/outputs/
+sahajbert/model/
+*.zip
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.onnx
+predictions*.csv
+local_*.csv
+
+# the trained weights ARE wanted in the image (they match the *.safetensors/*.bin rules above)
+!models/**
