@@ -1,0 +1,14 @@
+{
+  "model_name": "neuropark/sahajBERT",
+  "raw_data": "data/uploaded_dataset.csv",
+  "processed_data": "data/processed.csv",
+  "lexicon": "data/lexicon.json",
+  "model_dir": "model",
+  "epochs": 5,
+  "batch_size": 8,
+  "lr": 2e-5,
+  "max_length": 128,
+  "seed": 42,
+  "val_ratio": 0.2,
+  "threads": 4
+}

@@ -1,0 +1,82 @@
+{
+  "আসর": {
+    "1": {
+      "phoneme": "aSor",
+      "bangla_phoneme": "আশর"
+    },
+    "2": {
+      "phoneme": "asor",
+      "bangla_phoneme": "আসর"
+    }
+  },
+  "আসরে": {
+    "1": {
+      "phoneme": "aSore",
+      "bangla_phoneme": "আশরে"
+    },
+    "2": {
+      "phoneme": "asore",
+      "bangla_phoneme": "আসরে"
+    }
+  },
+  "আসরের": {
+    "1": {
+      "phoneme": "aSorer",
+      "bangla_phoneme": "আশরের"
+    },
+    "2": {
+      "phoneme": "asorer",
+      "bangla_phoneme": "আসরের"
+    }
+  },
+  "আসল": {
+    "1": {
+      "phoneme": "aSol",
+      "bangla_phoneme": "আশল"
+    },
+    "2": {
+      "phoneme": "aSlo",
+      "bangla_phoneme": "আশলো"
+    }
+  },
+  "কর": {
+    "1": {
+      "phoneme": "k∂r",
+      "bangla_phoneme": "কর"
+    },
+    "2": {
+      "phoneme": "k∂ro",
+      "bangla_phoneme": "করো"
+    }
+  },
+  "করাত": {
+    "1": {
+      "phoneme": "k∂rat",
+      "bangla_phoneme": "করাত"
+    },
+    "2": {
+      "phoneme": "k∂rato",
+      "bangla_phoneme": "করাতো"
+    }
+  },
+  "কেন": {
+    "1": {
+      "phoneme": "kεno",
+      "bangla_phoneme": "ক্যানো"
+    },
+    "2": {
+      "phoneme": "keno",
+      "bangla_phoneme": "কেনো"
+    }
+  },
+  "কেবলা": {
+    "1": {
+      "phoneme": "kebla",
+      "bangla_phoneme": "কেবলা"
+    },
+    "2": {
+      "phoneme": "kεbla",
+      "bangla_phoneme": "ক্যাবলা"
+    }
+  }
+}
