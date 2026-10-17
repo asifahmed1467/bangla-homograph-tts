@@ -65,3 +65,7 @@ python evaluate_cpu.py --adapter gemma_cpu_lora --sentence "..."
 Try the trained model in a browser with `python app.py`, or check example sentences with `python test_examples.py` (see `gemma_training/README.md`, section "Try the trained model"). Put your `gemma_cpu_lora` folder next to the scripts first.
 
 For GPU training on Colab, see `gemma_training/colab_train.ipynb` and `gemma_training/README.md`.
+
+## Two-tag update
+
+Both models accept up to 2 `<hg>` tags per sentence, and the web app shows timing and supports batch input. See `TWO_TAG_UPDATE.md` for the data, the training commands and the evaluation steps.
