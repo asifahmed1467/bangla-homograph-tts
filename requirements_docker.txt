@@ -1,0 +1,9 @@
+# Installed by the Dockerfile (torch is installed first, from the CPU-only index, see Dockerfile)
+transformers==4.57.1
+peft==0.17.1
+tokenizers>=0.20
+safetensors>=0.4
+accelerate>=1.0
+sentencepiece
+numpy>=1.26,<3
+gradio==5.50.0

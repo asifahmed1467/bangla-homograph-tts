@@ -1,0 +1,14 @@
+# Build once:  docker compose build      Start:  docker compose up      Stop: Ctrl+C
+# Then open http://localhost:7860.  The models are inside the image, nothing is mounted or downloaded.
+services:
+  homograph:
+    build: .
+    image: bangla-homograph:latest
+    container_name: bangla-homograph
+    ports:
+      - "7860:7860"
+    environment:
+      HG_TAG_MODE: before            # how prepare_data.py was run: before (tag right before the word), trigger, or none
+      HG_SHARE: "0"                  # "1" = also print a temporary public link (gradio.live; needs internet)
+      HG_FAKE: "0"                   # "1" = stand-in answers, only to check the page
+    restart: unless-stopped
