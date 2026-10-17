@@ -1,0 +1,161 @@
+﻿no,word,status,pair_type,v1_reading,v2_reading,v1_rows,v2_rows,v1_unique,v2_unique,v1_bare_word_rows,v2_bare_word_rows,v1_words_per_sentence,v2_words_per_sentence,issues,contexts_to_add,native_speaker_check
+1,আসর,NEEDS_MORE_CONTEXT,same spelling,আশর,আসর,10,10,5,5,10,10,8-11,8-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 is only online/virtual gatherings; v2 is only ""আসর নামাজ"" with delivery/support framing; 80% of sentences use online-shop/support framing","v2 prayer: আসরের ওয়াক্ত, আজান, মসজিদে জামাত, অজু, আসরের পর কুরআন তিলাওয়াত, যোহর-আসর-মাগরিব, রোজায় আসরের পর ইফতারের প্রস্তুতি | v1 gathering: গানের আসর, কবিতার আসর, দাবার আসর, কাওয়ালির আসর, আসর জমানো, বিশ্বকাপের এবারের আসর",yes: [s] vs [ʃ] for the prayer name depends on the speaker
+2,আসরে,NEEDS_MORE_CONTEXT,same spelling,আশরে,আসরে,10,10,5,10,10,10,8-11,7-8,"only 5/10 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 is only online gatherings","v1: সাহিত্য আসরে, গানের আসরে, মাহফিলের আসরে, টুর্নামেন্টের এবারের আসরে | v2: আসরে আজান হলে, আসরে মসজিদে জামাত, আসরে কুরআন পড়া",yes: same as আসর
+3,আসরের,NEEDS_MORE_CONTEXT,same spelling,আশরের,আসরের,10,10,5,5,10,10,7-10,8-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v2 mostly order/delivery/support framing; 70% of sentences use online-shop/support framing","v2: আসরের আজান, আসরের ওয়াক্ত, আসরের জামাত, আসরের নামাজের পর তিলাওয়াত | v1: আসরের মধ্যমণি, আসরের শিল্পী, আসরের সভাপতি, এবারের আসরের চ্যাম্পিয়ন",yes: same as আসর
+4,আসল,NEEDS_MORE_CONTEXT,"second reading normally written with ো/other spelling (আসলো, colloquial)",আশল,আশলো,10,10,5,5,10,10,7-10,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); note the filler ""আসলে,"" is used across the whole file and is itself a homograph-engine word; 50% of sentences use online-shop/support framing","v1: আসল নাম, আসল কথা, আসল সোনা, আসল কারণ | v2: চিঠি/বৃষ্টি/ঘুম/মেহমান আসলো (everyday, not delivery)",yes: v2 is colloquial (standard এল/এলো)
+5,কর,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,কর,করো,10,10,5,5,10,10,7-10,7-10,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 70% of sentences use online-shop/support framing","v1: আয়কর, পৌরকর, করের বোঝা, কর রেয়াত, করজোড়ে | v2: commands outside shopping (পড়া শেষ করো, চেষ্টা করো, রান্না করো)",
+6,করাত,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,করাত,করাতো,10,10,5,5,10,10,7-10,8-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v2 row ""একই তথ্য বারবার লিখিয়ে করাতো"" is ungrammatical; 40% of sentences use online-shop/support framing","v1: কাঠমিস্ত্রির করাত, করাতকল, করাতের দাঁত | v2: শিক্ষক অনুশীলন করাতো, মা হোমওয়ার্ক করাতো",
+7,কেন,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ক্যানো,কেনো,10,10,5,5,10,10,6-10,6-9,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); both variants only shopping/support; 50% of sentences use online-shop/support framing","v1: everyday why-questions (কেন দেরি হলো, কেন কাঁদছ, কেন যে) | v2: বাজার থেকে সবজি কেনো, টিকিট কেনো",
+8,কেবলা,NEEDS_MORE_CONTEXT,"different spelling (ক্যাবলা), colloquially কেবলা",কেবলা,ক্যাবলা,10,10,5,5,10,10,7-11,7-10,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 only apps/compasses; 40% of sentences use online-shop/support framing","v1: নামাজে কেবলামুখী হওয়া, মসজিদের কেবলা, কাবা শরিফ, কেবলার দিক ঠিক করা | v2: ক্যাবলা হাসি, ক্যাবলাকান্ত",yes
+9,কোন,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,কোন,কোনো,10,10,5,5,10,10,6-9,6-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 60% of sentences use online-shop/support framing","v1: কোন বই, কোন দিকে, কোন সালে | v2: কোনো দিন, কোনো কিছু, কোনোভাবে, negations",
+10,খোঁজ,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,খোঁজ,খোঁজো,10,10,5,5,10,10,6-10,6-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); mostly lost-parcel framing; 70% of sentences use online-shop/support framing","v1: হারানো মানুষের খোঁজ, খোঁজখবর নেওয়া | v2: ঘরে চাবি খোঁজো, বইটা খোঁজো",
+11,গড়,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,গড়,গড়ো,10,10,5,5,10,10,6-9,7-10,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 80% of sentences use online-shop/support framing","v1: গড় নম্বর, গড় আয়ু, গড় তাপমাত্রা, গড় বৃষ্টিপাত | v2: ঘর গড়ো, মূর্তি গড়ো, দেশ গড়ো",
+12,গেল,NOT_SUITABLE,second reading normally written with ো/other spelling,গ্যালো,গেলো,10,10,5,10,10,5,7-12,7-12,"5 of 10 v2 rows do not contain the word at all (they use গিলতে/গিলে); the other 5 are lead-in copies and some are odd; v1 only 5 unique; the respelling গেলো is also a common spelling of ""went"", so it is a risky target form; 40% of sentences use online-shop/support framing","rewrite v2 (swallow): ওষুধটা পানি দিয়ে গেলো, খাবার না চিবিয়ে গেলো না",yes
+13,ঘোর,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ঘোর,ঘোরো,10,10,5,5,10,10,8-12,7-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 70% of sentences use online-shop/support framing","v1: ঘোর অন্ধকার, ঘোর বিপদ, নেশার ঘোর, ঘুমের ঘোর | v2: মেলায় ঘোরো, পার্কে ঘোরো",
+14,চড়,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,চড়,চড়ো,10,10,5,5,10,10,8-11,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 only violence; phoneme uses r for ড় (গড় uses R)","v1: গালে চড়, চড় খাওয়া | v2: বাসে/রিকশায়/গাছে/ঘোড়ায় চড়ো",
+15,চল,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,চলো,চল,10,10,5,5,10,10,7-11,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: চলো যাই, চলো খেলি | v2: পুরোনো চল, নতুন চল এসেছে, চল উঠে গেছে, পোশাকের চল",
+16,চির,NOT_SUITABLE,different spelling (crack is চিড়),চির,চিরো,10,10,5,5,10,10,8-11,8-11,"the ""crack"" meaning is normally spelled চিড়, so v1 does not test the same written word; v2 sentences are written চির, not চিরো like other words; 5/5 unique","drop, or keep only চির (eternal) contexts",yes
+17,ছাড়,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ছাড়,ছাড়ো,10,10,5,5,10,10,7-10,7-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 only shop discounts; 40% of sentences use online-shop/support framing","v1: তর্কে ছাড় দেওয়া, করে ছাড়, এক ইঞ্চি ছাড় নয় | v2: হাত ছাড়ো, ধূমপান ছাড়ো",
+18,টস,NEEDS_MORE_CONTEXT,same spelling,টস,টশ,10,10,5,5,10,10,8-12,8-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: কয়েন টস করে সিদ্ধান্ত, ফুটবলের টস | v2: চোখ থেকে টস টস করে পানি, টসটসে রস",yes: টশ is usually written টস/টসটস
+19,টান,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,টান,টানো,10,10,5,5,10,10,7-12,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: দড়ির টান, শ্বাসের টান, টাকার টান, কথার টান (accent) | v2: দড়ি টানো, রিকশা টানো",
+20,ডাক,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ডাক,ডাকো,10,10,5,5,10,10,7-11,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 only postal","v1: পাখির ডাক, মায়ের ডাক, নিলামের ডাক, ডাক পড়া, ধর্মঘটের ডাক | v2 fine",
+21,ঢাক,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ঢাক,ঢাকো,10,10,5,5,10,10,7-11,7-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); homograph_sentences_21_40.csv already has 10 unique per variant for this word","v1: পূজার ঢাক, ঢাকের বাদ্যি, ঢাকঢোল",
+22,ঢাল,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ঢাল,ঢালো,10,10,5,5,10,10,7-11,8-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 has no slope meaning","v1: পাহাড়ের ঢাল, রাস্তার ঢাল, নদীর পাড়ের ঢাল",
+23,নাচ,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,নাচ,নাচো,10,10,5,5,10,10,7-11,6-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: লোকনাচ, কত্থক, বিয়েবাড়ির নাচ, নাচের স্কুল",
+24,নাম,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,নাম,নামো,10,10,5,5,10,10,7-11,7-10,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 50% of sentences use online-shop/support framing","v1: নাম রাখা, নাম ডাকা, সুনাম | v2: বাস থেকে নামো, পানিতে নামো",
+25,নিয়ত,NEEDS_MORE_CONTEXT,same spelling,নিয়ত,নিয়তো,10,10,5,5,10,10,8-11,7-12,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v2 sentences write নিয়ত (not নিয়তো like other respelled words); v1 lacks religious contexts","v1: নামাজের নিয়ত, রোজার নিয়ত, নিয়ত বাঁধা, হজের নিয়ত | v2 literary: নিয়ত পরিবর্তনশীল, নিয়ত সংগ্রাম",yes: likely real but not dictionary-confirmed
+26,পরে,NEEDS_MORE_CONTEXT,same spelling,পরে,পোরে,9,10,9,10,9,10,7-10,7-10,"rows 502-520 have stray tab characters (several rows split into extra columns); v1 has 9 rows; v2 sentences write পরে, not পোরে","v1: আরও ""after"" sentences to reach 10+; both: question and short forms","yes: many speakers say /pore/ for ""after"" too; earlier review marked the v1 label low-confidence"
+27,পাস,NOT_SUITABLE,same spelling,পাশ,পাস,10,10,5,5,10,10,6-10,7-12,"same English loan; [s] vs [ʃ] is speaker variation, not meaning (earlier review); 5/5 unique",,yes
+28,ফেল,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ফেল,ফ্যালো,10,10,5,5,10,10,7-12,6-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 exam only","v1: ব্রেক ফেল, ইঞ্জিন ফেল, হার্ট ফেল | v2 fine",
+29,বল,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,বল,বলো,10,10,5,5,10,10,7-11,6-10,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 ball only","v1: গায়ে বল নেই, মনের বল, ক্রিকেট বল | v2 fine",
+30,বস,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,বসো,বস,10,10,5,9,10,10,7-11,6-11,v1 only 5 unique (lead-in copies),"v1: খেতে বসো, পড়তে বসো, আসনে বসো",
+31,বাঁধ,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,বাঁধ,বাঁধো,10,10,5,5,10,10,6-10,7-11,"only 5/5 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: বেড়িবাঁধ, বাঁধভাঙা আনন্দ, কাপ্তাই বাঁধ",
+32,বার,NOT_SUITABLE,second reading normally written with ো/other spelling,বার,বারো,10,10,5,5,10,10,7-10,6-11,"label mismatch: v2 sentences use the weekday meaning (আজ কী বার), which is said /bar/ like v1, not /baro/; the project's 21_40 file rewrote v2 as বারো (twelve)",,
+33,বাস,TRAIN_READY,same spelling,বাস,বাশ,10,10,10,10,10,10,7-9,7-10,,"optional v1: বাসস্ট্যান্ড, বাসভাড়া | v2: সুবাস/বাস (fragrance)",yes: some dialects merge স/শ
+34,ভাব,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,ভাব,ভাবো,10,10,7,7,10,10,8-12,8-13,"only 3/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: ভাব প্রকাশ, দুই বন্ধুর ভাব, ভাবের গান, ভাবভঙ্গি | v2: ভেবে দেখো",
+35,মত,TRAIN_READY,second reading normally written with ো/other spelling,মতো,মত,10,10,10,10,10,10,7-9,7-9,,optional: more মত (opinion) in news/meeting contexts,
+36,মর,NOT_SUITABLE,second reading normally written with ো/other spelling,মরো,মর,10,10,7,7,10,10,8-11,8-11,"only curse/meta sentences (""মরো কথাটি"", ""কাউকে মর বলো না""); 3-4 unique; unnatural and offensive for a TTS voice",,
+37,মান,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,মান,মানো,10,10,7,7,10,10,8-11,8-12,"only 3/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: মান-সম্মান, অভিমান ভাঙানো (মান), গাণিতিক মান, পানির মান | v2: নিয়ম মানো",
+38,মানত,TRAIN_READY,second reading normally written with ো/other spelling,মানত,মানতো,10,10,10,10,10,10,7-9,6-9,,"optional v1: মাজারে মানত, শিরনির মানত",
+39,মেলা,NOT_SUITABLE,same spelling,মেলা,ম্যলা,10,10,10,10,10,10,7-9,7-9,"labels look swapped: verbal noun মেলা (to match) is normally /mæla/ (like খেলা, দেখা) and the fair is /mela/; bangla_phoneme ম্যলা is missing া","swap labels if confirmed, then train-ready",yes
+40,রঞ্জিত,NEEDS_MORE_CONTEXT,same spelling,রঞ্জিতো,রঞ্জিত,10,10,7,7,10,10,8-11,8-12,"only 5/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 50% of sentences use online-shop/support framing","v1: রক্তে রঞ্জিত রাজপথ, আবিরে রঞ্জিত | v2: name in varied situations",yes: name pronunciation varies
+41,শেখ,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,শেখো,শেখ,10,10,7,7,10,10,7-10,8-11,"only 5/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 85% of sentences use online-shop/support framing","v1: গান শেখো, সাঁতার শেখো | v2: শেখ পরিবার, শেখ সাহেব",
+42,সর,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,সর,সরো,10,10,7,7,10,10,8-12,7-11,"only 6/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...)","v1: দুধের সর, সর পড়া, সরভাজা | v2: পথ থেকে সরো",
+43,সার,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,সার,সারো,10,10,7,7,10,10,7-11,8-11,"only 4/4 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); 50% of sentences use online-shop/support framing","v1: জৈব সার, কথার সার, সার বেঁধে দাঁড়ানো | v2: কাজ সারো",
+44,সুরঞ্জিত,NEEDS_MORE_CONTEXT,same spelling,সুরঞ্জিতো,সুরঞ্জিত,10,10,7,7,10,10,7-10,8-11,"only 3/3 unique sentences; the rest repeat them with a lead-in (সত্যি বলতে, আসলে, ...); v1 adjective is rare; 50% of sentences use online-shop/support framing",v1: আলোয় সুরঞ্জিত মঞ্চ | v2: name in varied situations,yes
+45,হল,TRAIN_READY,second reading normally written with ো/other spelling,হল,হলো,10,10,10,10,10,10,7-11,7-9,50% of sentences use online-shop/support framing,"optional v1: ছাত্রাবাসের হল, প্রেক্ষাগৃহ",
+46,হার,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,হার,হারো,10,10,7,10,10,10,8-12,8-10,"v1 only 3 unique and only ""rate""; some v2 rows awkward (""দল নিয়ে হারো যখন"", ""শেষ মুহূর্তে হারো যদি"")","v1: সোনার হার, খেলায় হার, সুদের হার, জন্মহার",
+47,হাসান,TRAIN_READY,same spelling,হাসান,হাশান,10,10,10,10,10,10,6-8,6-9,50% of sentences use online-shop/support framing,"optional v2: শিশুদের হাসান, দর্শকদের হাসান",yes: dental [s] in the name depends on the speaker
+48,হাসিল,NEEDS_MORE_CONTEXT,same spelling,হাসিল,হাশিল,10,10,10,7,8,10,6-9,8-11,"v2 only 3 unique; 2 v1 rows use হাসিলের, not হাসিল","v2: লক্ষ্য হাসিল, স্বার্থ হাসিল, উদ্দেশ্য হাসিল",yes
+49,থাম,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,থাম্,থামো,10,10,10,10,3,10,7-9,6-9,"7 of 10 v1 rows have only inflected forms (থামে, থামগুলো, থামের), so the bare word appears 3 times","v1: বারান্দার থাম, ইটের থাম, মন্দিরের থাম (bare word)",
+50,তোল,NOT_SUITABLE,second reading normally written with ো/other spelling,তোল্,তোলো,10,10,10,10,9,10,7-10,6-10,"v1 uses তোল as the gold weight unit, which is spelled তোলা",rewrite v1 or drop,yes
+51,মিল,NOT_SUITABLE,second reading normally written with ো/other spelling,মিল্,মিলো,10,10,10,10,10,10,7-10,7-9,"variant 2 imperative is not the usual form (মিলো; usual তুমি form is মেলো or ""দেখা করো""); ""চিকিৎসকের সঙ্গে মিলো"" reads unnatural",,yes
+52,মোড়,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,মোড়্,মোড়ো,10,10,10,10,4,10,7-9,7-9,"6 of 10 v1 rows have only inflected forms (মোড়ে, মোড়টা)","v1: রাস্তার মোড়, ঘটনার মোড়, চৌরাস্তার মোড় (bare word)",
+53,জোড়,TRAIN_READY,second reading normally written with ো/other spelling,জোড়্,জোড়ো,10,10,10,10,10,10,6-9,6-10,,,
+54,বদল,TRAIN_READY,second reading normally written with ো/other spelling,বদল্,বদলো,10,10,10,10,9,10,7-9,7-9,,,light: বদলো is colloquial (standard বদলাও)
+55,ফের,TRAIN_READY,second reading normally written with ো/other spelling,ফের্,ফেরো,10,10,10,10,10,10,8-10,6-9,,,
+56,ঝাড়,TRAIN_READY,second reading normally written with ো/other spelling,ঝাড়্,ঝাড়ো,10,10,10,10,7,10,7-9,7-8,3 v1 rows inflected only (excluded),,
+57,শিখ,TRAIN_READY,second reading normally written with ো/other spelling,শিখ্,শিখো,10,10,10,10,10,10,6-9,7-9,,,light: শিখো is colloquial (standard শেখো)
+58,খাট,NEEDS_MORE_CONTEXT,second reading normally written with ো/other spelling,খাট্,খাটো,10,10,10,10,5,10,7-9,7-9,"5 of 10 v1 rows inflected only (খাটের, খাটে)","v1: কাঠের খাট, হাসপাতালের খাট (bare word)",
+59,সাজ,TRAIN_READY,second reading normally written with ো/other spelling,সাজ্,সাজো,10,10,10,10,9,10,6-9,7-9,,,
+60,ভাজ,NOT_SUITABLE,different spelling (fold is ভাঁজ),ভাজ্,ভাজো,10,10,10,10,10,10,7-9,6-8,"v1 uses ভাজ for ""fold"", which is spelled ভাঁজ; the real noun ভাজ means a brother's wife (ননদ-ভাজ)",rewrite v1 with ভাজ = brother's wife,yes
+61,বক,TRAIN_READY,second reading normally written with ো/other spelling,বক্,বকো,10,10,10,10,8,10,7-9,7-10,2 v1 rows inflected only (excluded),,
+62,লুট,TRAIN_READY,second reading normally written with ো/other spelling,লুট্,লুটো,10,10,10,10,7,10,7-9,7-9,3 v1 rows inflected only (excluded),,light: লুটো is figurative here (লুটে নাও is more natural)
+63,লাফ,NOT_SUITABLE,second reading normally written with ো/other spelling,লাফ্,লাফো,10,10,10,10,9,10,6-9,6-9,variant 2 imperative is not the usual form (লাফো; standard লাফাও / লাফ দাও),,yes
+64,ঝাঁপ,NOT_SUITABLE,second reading normally written with ো/other spelling,ঝাঁপ্,ঝাঁপো,10,10,10,10,7,10,6-9,7-8,variant 2 imperative is not the usual form (ঝাঁপো; standard ঝাঁপ দাও / ঝাঁপাও),,yes
+65,দৌড়,NOT_SUITABLE,second reading normally written with ো/other spelling,দৌড়্,দৌড়ো,10,10,10,10,9,10,7-9,6-9,variant 2 imperative is not the usual form (দৌড়ো; standard দৌড়াও),,yes
+66,হাঁক,TRAIN_READY,second reading normally written with ো/other spelling,হাঁক্,হাঁকো,10,10,10,10,9,10,6-9,6-9,,,
+67,চাট,TRAIN_READY,second reading normally written with ো/other spelling,চাট্,চাটো,10,10,10,10,7,10,7-9,7-8,3 v1 rows inflected only (excluded),,
+68,চাপড়,NOT_SUITABLE,second reading normally written with ো/other spelling,চাপড়্,চাপড়ো,10,10,10,10,10,10,7-9,6-9,variant 2 imperative is not the usual form (চাপড়ো; standard চাপড়াও / চাপড় দাও),,yes
+69,টোক,NOT_SUITABLE,second reading normally written with ো/other spelling,টোক্,টোকো,10,10,10,10,10,10,7-9,7-8,"a knock is normally টোকা; v2 টোকো means ""copy"" (verb টোকা), not ""knock""",,yes
+70,দাগ,TRAIN_READY,second reading normally written with ো/other spelling,দাগ্,দাগো,10,10,10,10,10,10,7-9,6-8,,,"light: দাগো for ""mark"" is uncommon (দাগ দাও)"
+71,শোধ,TRAIN_READY,second reading normally written with ো/other spelling,শোধ্,শোধো,10,10,10,10,8,10,7-9,6-9,2 v1 rows inflected only (excluded),,
+72,ফুল,NOT_SUITABLE,second reading normally written with ো/other spelling,ফুল্,ফুলো,10,10,10,10,7,10,6-8,6-10,"variant 2 imperative is not the usual form (ফুলো for ""inflate""; standard ফোলাও)",,yes
+73,খেল,TRAIN_READY,second reading normally written with ো/other spelling,খেল্,খেলো,10,10,10,10,10,10,7-9,6-8,,,
+74,চাল,NOT_SUITABLE,second reading normally written with ো/other spelling,চাল্,চালো,10,10,10,10,7,10,7-8,5-9,"variant 2 imperative is not the usual form (চালো; standard চালাও); v1 (rice, chess move) is good",keep v1 for a different pair if needed,yes
+75,দুল,NOT_SUITABLE,second reading normally written with ো/other spelling,দুল্,দুলো,10,10,10,10,9,10,7-9,7-9,variant 2 imperative is not the usual form (দুলো; standard দোলো / দোলাও); several rows need the transitive meaning,,yes
+76,বাঁক,TRAIN_READY,second reading normally written with ো/other spelling,বাঁক্,বাঁকো,10,10,10,10,8,10,7-8,7-9,2 v1 rows inflected only (excluded),,
+77,মোচড়,NOT_SUITABLE,second reading normally written with ো/other spelling,মোচড়্,মোচড়ো,10,10,10,10,10,10,7-9,6-8,variant 2 imperative is not the usual form (মোচড়ো; standard মোচড়াও / মুচড়ে দাও),,yes
+78,নাড়,TRAIN_READY,second reading normally written with ো/other spelling,নাড়্,নাড়ো,10,10,10,10,10,10,7-9,6-9,"v1 is the তুই imperative (নাড়), v2 the তুমি imperative",,
+79,ঝাঁক,NOT_SUITABLE,second reading normally written with ো/other spelling,ঝাঁক্,ঝাঁকো,10,10,10,10,10,10,6-9,6-9,variant 2 imperative is not the usual form (ঝাঁকো; standard ঝাঁকাও),,yes
+80,কষ,TRAIN_READY,second reading normally written with ো/other spelling,কষ্,কষো,10,10,10,10,10,10,7-9,7-10,,,
+81,ঘটে,TRAIN_READY,same spelling,ঘটে,ঘোটে,10,10,10,10,10,10,7-9,8-11,,,
+82,ফলে,TRAIN_READY,same spelling,ফোলে,ফলে,10,10,10,10,10,10,7-12,7-10,,,
+83,ঠকে,TRAIN_READY,same spelling,ঠকে,ঠোকে,10,10,10,10,10,10,6-9,7-9,,,
+84,চটে,TRAIN_READY,same spelling,চটে,চোটে,10,10,10,10,10,10,6-12,7-9,,,
+85,দমে,TRAIN_READY,same spelling,দমে,দোমে,10,10,10,10,10,10,6-12,7-9,,,
+86,মজে,NEEDS_MORE_CONTEXT,same spelling,মজে,মোজে,10,10,10,10,10,10,6-10,7-8,all 10 v1 sentences are about pickles maturing (one situation),"v1: সে সহজেই নতুন শখে মজে, গানে মজে, পুকুর মজে (silts up)",
+87,রটে,TRAIN_READY,same spelling,রটে,রোটে,10,10,10,10,10,10,6-8,7-9,,,
+88,ধসে,TRAIN_READY,same spelling,ধসে,ধোসে,10,10,10,10,10,10,5-10,6-8,,,
+89,হটে,TRAIN_READY,same spelling,হটে,হোটে,10,10,10,10,10,10,7-8,7-10,one v1 and one v2 sentence are near copies (কুয়াশা ... হটে),,
+90,পটে,TRAIN_READY,same spelling,পটে,পোটে,10,10,10,10,10,10,5-10,8-9,,,
+91,ঘষে,TRAIN_READY,same spelling,ঘষে,ঘোষে,10,10,10,10,10,10,6-12,7-10,,,
+92,টকে,TRAIN_READY,same spelling,টকে,টোকে,10,10,10,10,10,10,7-11,7-9,,,
+93,পচে,TRAIN_READY,same spelling,পচে,পোচে,10,10,10,10,10,10,5-10,6-8,,,
+94,ডলে,TRAIN_READY,same spelling,ডলে,ডোলে,10,10,10,10,10,10,5-9,6-8,,,
+95,দলে,TRAIN_READY,same spelling,দলে,দোলে,10,10,10,10,10,10,7-8,7-10,,,
+96,বেচে,TRAIN_READY,same spelling,ব্যাচে,বেচে,10,10,10,10,10,10,5-8,7-9,,,
+97,মেলে,TRAIN_READY,same spelling,ম্যালে,মেলে,10,10,10,10,10,10,6-9,6-9,,,
+98,হেলে,TRAIN_READY,same spelling,হ্যালে,হেলে,10,10,10,10,10,10,6-8,6-9,,,
+99,ফেলে,TRAIN_READY,same spelling,ফ্যালে,ফেলে,10,10,10,10,10,10,7-9,8-9,,,
+100,ঠেলে,TRAIN_READY,same spelling,ঠ্যালে,ঠেলে,10,10,10,10,10,10,7-8,7-9,,,
+101,ঠেকে,TRAIN_READY,same spelling,ঠ্যাকে,ঠেকে,10,10,10,10,10,10,7-8,7-9,,,
+102,সরল,TRAIN_READY,second reading normally written with ো/other spelling,সরল,সরলো,10,10,10,10,10,10,7-10,7-9,,,
+103,পটল,TRAIN_READY,second reading normally written with ো/other spelling,পটল,পটলো,10,10,10,10,10,10,8-10,8-9,,,
+104,ছাপ,TRAIN_READY,second reading normally written with ো/other spelling,ছাপ্,ছাপো,10,10,10,10,10,10,7-10,7-10,,,
+105,টেপ,TRAIN_READY,second reading normally written with ো/other spelling,টেপ্,টেপো,10,10,10,10,10,10,7-9,8-10,,,
+106,ছাঁট,TRAIN_READY,second reading normally written with ো/other spelling,ছাঁট্,ছাঁটো,10,10,10,10,10,10,7-10,7-10,,,
+107,আঁক,TRAIN_READY,second reading normally written with ো/other spelling,আঁক্,আঁকো,10,10,10,10,10,10,7-9,7-9,v1 is the তুই imperative (আঁক্),,
+108,ঝোঁক,TRAIN_READY,second reading normally written with ো/other spelling,ঝোঁক্,ঝোঁকো,10,10,10,10,10,10,7-10,8-10,,,
+109,ভোল,TRAIN_READY,second reading normally written with ো/other spelling,ভোল্,ভোলো,10,10,10,10,10,10,7-9,7-9,,,
+110,মার,TRAIN_READY,second reading normally written with ো/other spelling,মার্,মারো,10,10,10,10,10,10,7-10,8-11,,,
+111,বোন,TRAIN_READY,second reading normally written with ো/other spelling,বোন্,বোনো,10,10,10,10,10,10,8-10,7-9,,,
+112,দোল,TRAIN_READY,second reading normally written with ো/other spelling,দোল্,দোলো,10,10,10,10,10,10,7-10,8-11,,,
+113,জাগ,TRAIN_READY,second reading normally written with ো/other spelling,জাগ্,জাগো,10,10,10,10,10,10,7-9,6-10,,,
+114,সেঁক,TRAIN_READY,second reading normally written with ো/other spelling,সেঁক্,সেঁকো,10,10,10,10,10,10,7-10,7-9,,,
+115,লেপ,TRAIN_READY,second reading normally written with ো/other spelling,লেপ্,লেপো,10,10,10,10,10,10,7-9,7-9,,,
+116,সাধ,TRAIN_READY,second reading normally written with ো/other spelling,সাধ্,সাধো,10,10,10,10,10,10,8-10,8-10,,,
+117,ঠেস,NOT_SUITABLE,second reading normally written with ো/other spelling,ঠেস্,ঠেসো,10,10,10,10,10,10,8-10,8-10,variant 2 imperative is not the usual form (ঠেসো; the imperative of ঠাসা is ঠাসো),,yes
+118,বাঁট,TRAIN_READY,second reading normally written with ো/other spelling,বাঁট্,বাঁটো,10,10,10,10,10,10,6-9,7-11,,,
+119,কাশ,TRAIN_READY,second reading normally written with ো/other spelling,কাশ্,কাশো,10,10,10,10,10,10,7-9,7-12,,,
+120,রাগ,TRAIN_READY,second reading normally written with ো/other spelling,রাগ্,রাগো,10,10,10,10,10,10,7-10,7-11,,,light: রাগো is less common than রাগ কোরো
+121,পাড়,TRAIN_READY,second reading normally written with ো/other spelling,পাড়্,পাড়ো,10,10,10,10,10,10,7-11,6-10,,,
+122,কোট,TRAIN_READY,second reading normally written with ো/other spelling,কোট্,কোটো,10,10,10,10,10,10,6-11,7-10,,,
+123,বেল,TRAIN_READY,second reading normally written with ো/other spelling,বেল্,বেলো,10,10,10,10,10,10,7-11,5-10,,,
+124,পাত,TRAIN_READY,second reading normally written with ো/other spelling,পাত্,পাতো,10,10,10,10,10,10,6-10,5-11,,,
+125,টলে,TRAIN_READY,same spelling,টলে,টোলে,10,10,10,10,10,10,5-9,7-11,,,
+126,ঠেসে,NOT_SUITABLE,same spelling,ঠ্যাসে,ঠেসে,10,10,10,10,10,10,7-12,8-10,v1 ঠ্যাসে as a present tense is doubtful; the standard present of ঠাসা is ঠাসে (earlier review),,yes
+127,সেঁকে,TRAIN_READY,same spelling,স্যাঁকে,সেঁকে,10,10,10,10,10,10,6-9,6-11,,,
+128,লেপে,TRAIN_READY,same spelling,ল্যাপে,লেপে,10,10,10,10,10,10,6-10,6-10,,,
+129,খেপে,TRAIN_READY,same spelling,খ্যাপে,খেপে,10,10,10,10,10,10,6-12,5-11,,,
+130,ঘেঁষে,TRAIN_READY,same spelling,ঘ্যাঁষে,ঘেঁষে,10,10,10,10,10,10,6-9,7-9,,,
+131,ভাগ,TRAIN_READY,second reading normally written with ো/other spelling,ভাগ্,ভাগো,10,10,10,10,10,10,7-10,5-11,,,
+132,ঝোল,TRAIN_READY,second reading normally written with ো/other spelling,ঝোল্,ঝোলো,10,10,10,10,10,10,6-10,7-10,,,
+133,গোঁজ,TRAIN_READY,second reading normally written with ো/other spelling,গোঁজ্,গোঁজো,10,10,10,10,10,10,8-11,6-10,,,
+134,ফোঁড়,TRAIN_READY,second reading normally written with ো/other spelling,ফোঁড়্,ফোঁড়ো,10,10,10,10,10,10,6-10,8-10,,,
+135,চেন,TRAIN_READY,second reading normally written with ো/other spelling,চেন্,চেনো,10,10,10,10,10,10,7-10,6-11,,,
+136,দম,TRAIN_READY,second reading normally written with ো/other spelling,দম্,দমো,10,10,10,10,10,10,6-11,8-10,,,
+137,চট,TRAIN_READY,second reading normally written with ো/other spelling,চট্,চটো,10,10,10,10,10,10,6-10,6-10,,,
+138,ঠক,TRAIN_READY,second reading normally written with ো/other spelling,ঠক্,ঠকো,10,10,10,10,10,10,6-10,6-10,ঠ written Θ in phoneme (placeholder),,
+139,হট,TRAIN_READY,second reading normally written with ো/other spelling,হট্,হটো,10,10,10,10,10,10,6-10,6-10,,,
+140,পট,TRAIN_READY,second reading normally written with ো/other spelling,পট্,পটো,10,10,10,10,10,10,6-10,5-9,,,
+141,ডল,TRAIN_READY,second reading normally written with ো/other spelling,ডল্,ডলো,10,10,10,10,10,10,7-9,6-10,,,
+142,খেপ,TRAIN_READY,second reading normally written with ো/other spelling,খেপ্,খ্যাপো,10,10,10,10,10,10,6-10,5-11,,,
+143,পোড়,TRAIN_READY,second reading normally written with ো/other spelling,পোড়্,পোড়ো,10,10,10,10,10,10,7-11,6-10,,,
+144,দোষ,TRAIN_READY,second reading normally written with ো/other spelling,দোষ্,দোষো,10,10,10,10,10,10,6-9,6-10,,,light: দোষো is uncommon (দোষ দিয়ো না)
+145,পোষ,TRAIN_READY,second reading normally written with ো/other spelling,পোষ্,পোষো,10,10,10,10,10,10,5-11,6-10,,,
+146,রোখ,TRAIN_READY,second reading normally written with ো/other spelling,রোখ্,রোখো,10,10,10,10,10,10,6-11,5-9,,,
+147,ভেজ,TRAIN_READY,second reading normally written with ো/other spelling,ভেজ্,ভেজো,10,10,10,10,10,10,6-9,7-11,,,light: ভিজো is the more common spelling
+148,মেশ,TRAIN_READY,second reading normally written with ো/other spelling,মেশ্,মেশো,10,10,10,10,10,10,6-10,5-11,,,
+149,খেত,TRAIN_READY,second reading normally written with ো/other spelling,খেত্,খেতো,10,10,10,10,10,10,6-10,6-10,"2 v2 rows are ungrammatical (""আমরা ... খেতো"" should be খেতাম); excluded",,
+150,ভরি,TRAIN_READY,same spelling,ভরি,ভোরি,10,10,10,10,10,10,7-11,6-10,,,
+151,বলি,TRAIN_READY,same spelling,বলি,বোলি,10,10,10,10,10,10,6-11,6-10,,,
+152,চটি,TRAIN_READY,same spelling,চটি,চোটি,10,10,10,10,10,10,6-9,5-11,one row has the digits ৪২ (normalise to words),,
+153,কাল,TRAIN_READY,"second reading normally written with ো/other spelling (কালো = black, old spelling কাল)",কাল্,কালো,10,10,10,10,10,10,7-10,6-10,,,
+154,জড়,NOT_SUITABLE,second reading normally written with ো/other spelling,জড়্,জড়ো,10,10,10,10,10,10,7-11,6-9,"v2 sentences are ungrammatical: জড়ো is an adjective and needs করো/হও (""সবাই মাঠে জড়ো"")","rewrite v2 with জড়ো করো / জড়ো হও, or drop",
+155,মেল,TRAIN_READY,second reading normally written with ো/other spelling,মেল্,মেলো,10,10,10,10,10,10,6-9,6-11,,,
+156,পাকল,NOT_SUITABLE,second reading normally written with ো/other spelling,পাকল্,পাকলো,10,10,10,10,10,10,5-8,6-9,"not a real contrast: পাকল and পাকলো are the same word, both /paklo/ (earlier review)",,
+157,গজে,TRAIN_READY,same spelling,গজে,গোজে,10,10,10,10,10,10,6-10,7-10,,,
+158,ছেঁচে,TRAIN_READY,same spelling,ছ্যাঁচে,ছেঁচে,10,10,10,10,10,10,5-9,6-10,,,
+159,সেঁচে,TRAIN_READY,same spelling,স্যাঁচে,সেঁচে,10,10,10,10,10,10,6-10,6-10,,,
+160,বেঁকে,NOT_SUITABLE,same spelling,ব্যাঁকে,বেঁকে,10,10,10,10,10,10,6-10,5-10,v1 ব্যাঁকে as a present tense is doubtful; the standard present of বাঁকা is বাঁকে (earlier review),,yes
