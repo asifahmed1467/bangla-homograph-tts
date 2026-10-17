@@ -1,0 +1,3 @@
+# Install PyTorch with CUDA first (see README step 1), then:  pip install -r requirements.txt
+unsloth
+datasets

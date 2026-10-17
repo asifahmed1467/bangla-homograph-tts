@@ -1,0 +1,6 @@
+# For train_cpu.py / evaluate_cpu.py on a PC without an NVIDIA GPU
+torch
+transformers>=4.50
+peft
+datasets
+gradio
