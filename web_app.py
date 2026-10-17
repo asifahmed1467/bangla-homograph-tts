@@ -1,10 +1,13 @@
 r"""One web page for all three models (the Docker image runs this file).
 
 Pick the model in the dropdown, type one sentence or many (one per line), press Run.
+Both models: up to 2 <hg> per sentence are corrected; from a 3rd <hg> on, the rest is kept as typed but without the <hg> tags.
+Every sentence shows the time it took; the results can be downloaded as a CSV.
   - Gemma 3 270M, plain chat:   the adapter is switched off, Gemma answers like a normal chat.
   - Gemma + homograph adapter:  a line WITH <hg> is respelled by the adapter (tag removed in the output);
                                 a line WITHOUT <hg> goes to plain Gemma, which does its normal work.
-  - sahajBERT classifier:       all lines WITH <hg> go to the model in ONE call (list in, list out);
+  - sahajBERT classifier:       all lines WITH <hg> go to the model in ONE call (list in, list out; a line
+                                with 2 tags is sent as 2 one-tag copies);
                                 lines without <hg> come back unchanged (sahajBERT only does homographs).
 
 Run without Docker:  python web_app.py           (models are read from the models/ folder next to this file)
@@ -21,7 +24,7 @@ Settings (environment variables, docker-compose.yml sets them):
   HG_SHARE=1          also print a temporary public gradio.live link
   HG_FAKE=1           stand-in models, no download, only to check the page
 """
-import contextlib, html, os, re, sys, threading
+import contextlib, csv, html, os, re, sys, tempfile, threading, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -47,6 +50,7 @@ if not common.TAG:                                    # no data/config.json (alw
     if TAG_MODE in ("trigger", "before"):
         common.INSTRUCTION = ""                       # same as common.py does for these modes
 from common import strip_tags
+from two_tags import MAX_TAGS, rewrite_max_two, split_at_extra_tag, one_tag_copies, put_respellings
 from homograph_lookup import load_words, fake_model, fake_chat
 from prepare_data import nfc
 from predict_batch import replace_tagged              # sahajBERT; does not need torch
@@ -206,53 +210,124 @@ def keep_homograph(source, answer):
         "reading 2 is not chosen by this fallback")
 
 
+EXTRA_NOTE = f"more than {MAX_TAGS} <hg>: the first {MAX_TAGS} were corrected, the rest is kept as typed (the extra <hg> tags are removed, those words are not respelled)"
+
+
 def run_gemma(lines):
-    """One Gemma system, decided per line: <hg> in the line -> homograph adapter converts it;
-    no <hg> -> the adapter is switched off and plain Gemma answers as usual."""
+    """One Gemma system, decided per line: <hg> in the line -> homograph adapter converts it (at most 2 tags);
+    no <hg> -> the adapter is switched off and plain Gemma answers as usual. Each line is timed."""
     rows = []
     for s in lines:
+        t = time.perf_counter()
         if TAG in s:
             if not adapter_found() and not FAKE:
-                rows.append([s, s, "", MISSING_ADAPTER])
+                rows.append([s, s, "", MISSING_ADAPTER, 0])
                 continue
-            answer, warn = keep_homograph(s, gemma.rewrite(gemma_prompt(s)))
-            rows.append([s, s, answer, "<hg> found: homograph adapter converted it" + (". Note: " + warn if warn else "")])
+            warns = []
+
+            def convert(part):                     # one model call for a line with at most 2 tags
+                answer, warn = keep_homograph(part, gemma.rewrite(gemma_prompt(part)))
+                if warn:
+                    warns.append(warn)
+                return answer
+
+            answer = rewrite_max_two(s, convert, TAG)
+            note = "<hg> found: homograph adapter converted it"
+            if split_at_extra_tag(s, TAG)[1]:
+                note += ". " + EXTRA_NOTE
+            row = [s, s, answer, note + (". Note: " + warns[0] if warns else "")]
         else:
-            rows.append([s, s, gemma.chat(s), "no <hg>: adapter off, plain Gemma answered normally"])
+            row = [s, s, gemma.chat(s), "no <hg>: adapter off, plain Gemma answered normally"]
+        rows.append(row + [round(1000 * (time.perf_counter() - t))])
     return rows
+
+
+BATCH_MS = {}                                       # whole-batch time of the last sahajBERT run, in ms
 
 
 def run_sahaj(lines):
+    """Every tagged word of every line goes to sahajBERT in ONE batch call. A line with 2 tags is sent as
+    2 copies with one tag each; from a 3rd tag on the line is kept as typed, without tags. The whole batch is
+    timed once (BATCH_MS), and each line is also timed on its own, so every line shows its own real time."""
     rows = [None] * len(lines)
-    todo = []
+    todo = []                                       # (line index, head with <= 2 tags, tail, one-tag copies)
     for i, s in enumerate(lines):
         if TAG not in s:
-            rows[i] = [s, s, s, "no <hg>: returned unchanged (sahajBERT only resolves tagged homographs)"]
-        elif not sahaj_found() and not FAKE:
-            rows[i] = [s, s, "", MISSING_SAHAJ]
-        elif err := sahaj.check(s):
-            rows[i] = [s, s, "", "skipped: " + err]
+            rows[i] = [s, s, s, "no <hg>: returned unchanged (sahajBERT only resolves tagged homographs)", 0]
+            continue
+        if not sahaj_found() and not FAKE:
+            rows[i] = [s, s, "", MISSING_SAHAJ, 0]
+            continue
+        head, tail = split_at_extra_tag(s, TAG)
+        tail = " ".join(tail.replace(TAG, "").split())
+        copies = one_tag_copies(head, TAG)
+        err = next((e for e in map(sahaj.check, copies) if e), "")
+        if err:
+            rows[i] = [s, s, "", "skipped: " + err, 0]
         else:
-            todo.append(i)
+            todo.append((i, head, tail, copies))
     if todo:
-        batch = [lines[i] for i in todo]
+        batch = [c for *_, copies in todo for c in copies]
+        t = time.perf_counter()
         results = sahaj.get().predict(batch, sahaj.cfg["batch_size"])   # the whole list in one call
-        for i, r in zip(todo, results):
-            note = f"reading {r['pronunciation_variant']}"
-            rows[i] = [lines[i], lines[i], replace_tagged(lines[i], r["bangla_phoneme"]), note]
+        BATCH_MS["sahaj"] = round(1000 * (time.perf_counter() - t))
+        k = 0
+        for i, head, tail, copies in todo:
+            got = results[k:k + len(copies)]
+            k += len(copies)
+            t = time.perf_counter()
+            sahaj.get().predict(copies, sahaj.cfg["batch_size"])        # this line alone, only to time it
+            own_ms = round(1000 * (time.perf_counter() - t))
+            answer = " ".join((put_respellings(head, [r["bangla_phoneme"] for r in got], TAG) + " " + tail).split())
+            note = "reading " + " + ".join(str(r["pronunciation_variant"]) for r in got)
+            if tail:
+                note += ". " + EXTRA_NOTE
+            rows[i] = [lines[i], "\n".join(copies), answer, note, own_ms]
     return rows
+
+
+def save_csv(rows, model):
+    f = tempfile.NamedTemporaryFile("w", suffix=".csv", prefix="homograph_results_", delete=False,
+                                    encoding="utf-8-sig", newline="")
+    with f:
+        w = csv.writer(f)
+        w.writerow(["input", "output", "time_ms", "what happened", "model"])
+        for r in rows:
+            w.writerow([r[0], r[2], r[4], r[3], model])
+        w.writerow(["TOTAL", "", sum(r[4] for r in rows), "sum of the individual times", model])
+        if "sahaj" in BATCH_MS:
+            w.writerow(["BATCH", "", BATCH_MS["sahaj"], "all tagged words in one batch call", model])
+    return f.name
 
 
 def run(text, model):
     lines = [nfc(l.strip()) for l in (text or "").splitlines() if l.strip()]
     if not lines:
-        return "", "", [], "Type a sentence first (or several, one per line)."
+        return "", "", [], "Type a sentence first (or several, one per line).", None
     try:
+        t = time.perf_counter()
+        if model == SAHAJ:
+            if sahaj_found() or FAKE:
+                sahaj.get()                         # load once, so loading is not counted as sentence time
+        else:
+            gemma.load()
+        load = time.perf_counter() - t
+        t = time.perf_counter()
+        BATCH_MS.clear()
         rows = run_sahaj(lines) if model == SAHAJ else run_gemma(lines)
+        total = time.perf_counter() - t
     except Exception as e:                          # show the problem on the page instead of a blank error
-        return "", "", [], f"Error: {type(e).__name__}: {e}"
-    return ("\n".join(r[2] for r in rows), pretty(rows), rows,
-            f"{len(rows)} sentence(s) done with: {model}")
+        return "", "", [], f"Error: {type(e).__name__}: {e}", None
+    own_sum = sum(r[4] for r in rows)
+    status = (f"{len(rows)} sentence(s) done with: {model}. Whole batch: {total:.2f} s, "
+              f"{1000 * total / len(rows):.0f} ms per sentence on average. "
+              f"Sum of the individual times: {own_sum} ms.")
+    if "sahaj" in BATCH_MS:
+        status += (f" sahajBERT batch call (all tagged words in one go): {BATCH_MS['sahaj']} ms; "
+                   f"the individual times were measured one sentence at a time, so they add up to more.")
+    if load > 0.5:
+        status += f" (model loading, first run only: {load:.1f} s, not counted)"
+    return "\n".join(r[2] for r in rows), pretty(rows), rows, status, save_csv(rows, model)
 
 
 # ---- homograph words: the 8-word list, bolding, samples ----
@@ -280,7 +355,7 @@ def pretty(rows):
     for i, r in enumerate(rows, 1):
         out.append(f"<p><span style='opacity:.6'>{i}. input:</span> {bold(r[1])}<br>"
                    f"<span style='opacity:.6'>&nbsp;&nbsp;&nbsp;output:</span> {bold(r[2]) if r[2] else '<i>(none)</i>'}<br>"
-                   f"<span style='opacity:.6;font-size:.85em'>&nbsp;&nbsp;&nbsp;{html.escape(r[3])}</span></p>")
+                   f"<span style='opacity:.6;font-size:.85em'>&nbsp;&nbsp;&nbsp;{html.escape(r[3])} · {r[4]} ms</span></p>")
     out.append("</div>")
     return "".join(out)
 
@@ -296,6 +371,8 @@ SAMPLES = [
     "গল্পের <hg>আসরে সবাই আজ আনন্দ করছে।",
     "<hg>আসরের আগে অর্ডারটি নিশ্চিত করে দিন।",
     "ছেলেটাকে সবাই <hg>কেবলা বলে ডাকে।",
+    "বিলে <hg>কর যোগ হয়েছে, কিন্তু অর্ডারটা এখনো <hg>আসল না।",
+    "<hg>আসরের পর অফিসে যাব, তুমি নতুন সিমটা <hg>কেন, আর <hg>কেবলা অ্যাপটাও নামিয়ে রাখো।",
 ]
 
 
@@ -315,7 +392,9 @@ with gr.Blocks(title="Bangla homograph demo") as demo:
         f"Put `{TAG}` right before the homograph (no space), for example `তুমি {TAG}কেন এত দেরি করলে?`. "
         f"A sentence with `{TAG}` is converted by the homograph model (the tag is removed and the word is "
         "replaced by its pronunciation spelling). A sentence without the tag gets the model's normal behaviour. "
-        "One sentence per line for many at once.\n\n" + model_status())
+        f"Up to {MAX_TAGS} `{TAG}` per sentence are corrected; from a third `{TAG}` on, the rest of the sentence is kept as typed but without the `{TAG}` tags. "
+        "Many at once: put one sentence per line. "
+        "Each sentence shows the time it took, and all results can be downloaded as a CSV.\n\n" + model_status())
     with gr.Row():
         model = gr.Dropdown(CHOICES, value=GEMMA_HG, label="Model")
     gr.Markdown("**The 8 homograph words:** " + " &nbsp;·&nbsp; ".join(f"**{w}** ({_LEX[w]['1']['bangla_phoneme']} / {_LEX[w]['2']['bangla_phoneme']})" for w in HOMOGRAPHS))
@@ -324,10 +403,11 @@ with gr.Blocks(title="Bangla homograph demo") as demo:
     out = gr.Textbox(label="Output, one per line", lines=5, interactive=False)
     shown = gr.HTML(label="Result with the homograph words in bold")
     status = gr.Markdown()
-    table = gr.Dataframe(headers=["input", "sent to the model", "output", "what happened"],
+    download = gr.File(label="Download all results (CSV)", interactive=False)
+    table = gr.Dataframe(headers=["input", "sent to the model", "output", "what happened", "time (ms)"],
                          label="Details", interactive=False, wrap=True)
-    gr.Examples([[x] for x in SAMPLES], inputs=[text], label="10 sample inputs (click one to fill the box)")
-    btn.click(run, [text, model], [out, shown, table, status])
+    gr.Examples([[x] for x in SAMPLES], inputs=[text], label="Sample inputs (click one to fill the box)")
+    btn.click(run, [text, model], [out, shown, table, status, download])
 
 if __name__ == "__main__":
     print("\nOpen http://localhost:7860 in your browser.\n", flush=True)
