@@ -1,14 +1,21 @@
 # Build once:  docker compose build      Start:  docker compose up      Stop: Ctrl+C
-# Then open http://localhost:7860.  The models are inside the image, nothing is mounted or downloaded.
+# Then open http://localhost:7860 (or the HG_PORT you set).  The models are inside the image, nothing is mounted or downloaded.
+# Settings: copy .env.example to .env and change values there; docker compose reads .env by itself.
 services:
   homograph:
     build: .
     image: bangla-homograph:latest
     container_name: bangla-homograph
     ports:
-      - "7860:7860"
+      - "${HG_PORT:-7860}:${HG_PORT:-7860}"
     environment:
-      HG_TAG_MODE: before            # how prepare_data.py was run: before (tag right before the word), trigger, or none
-      HG_SHARE: "0"                  # "1" = also print a temporary public link (gradio.live; needs internet)
-      HG_FAKE: "0"                   # "1" = stand-in answers, only to check the page
+      HG_PORT: ${HG_PORT:-7860}
+      HG_HOST: 0.0.0.0                              # must listen on all addresses inside the container
+      HG_DEFAULT_MODEL: ${HG_DEFAULT_MODEL:-gemma}  # gemma or sahajbert
+      HG_TAG_MODE: ${HG_TAG_MODE:-before}           # how prepare_data.py was run: before, trigger, or none
+      HG_MAX_TAGS: ${HG_MAX_TAGS:-2}                # <hg> tags corrected per sentence
+      HG_ASR_RULE: ${HG_ASR_RULE:-1}                # 0 = keyword safety net for আসর off
+      HG_ASR_WINDOW: ${HG_ASR_WINDOW:-4}
+      HG_SHARE: ${HG_SHARE:-0}                      # 1 = also print a temporary public link (gradio.live; needs internet)
+      HG_FAKE: ${HG_FAKE:-0}                        # 1 = stand-in answers, only to check the page
     restart: unless-stopped

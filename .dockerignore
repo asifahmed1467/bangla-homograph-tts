@@ -23,3 +23,4 @@ local_*.csv
 
 # the trained weights ARE wanted in the image (they match the *.safetensors/*.bin rules above)
 !models/**
+.env
