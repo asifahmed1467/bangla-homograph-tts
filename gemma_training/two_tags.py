@@ -5,7 +5,9 @@ words are corrected and everything from the third tag onward comes back exactly 
 the <hg> tags (the word after a 3rd or later tag is NOT respelled).
 This is done here in code, so it holds whatever the model does. Used by web_app.py, evaluate_cpu.py, run_local.py.
 """
-MAX_TAGS = 2
+import os
+
+MAX_TAGS = int(os.environ.get("HG_MAX_TAGS", "2"))   # the models were trained with at most 2
 
 
 def split_at_extra_tag(sentence, tag="<hg>", max_tags=MAX_TAGS):
@@ -77,14 +79,15 @@ GATHERING_CUES = ("গান", "গজল", "কবিতা", "আবৃত্�
                   "শিল্পী", "বসেছিল", "বসেছে", "বসবে", "বসল", "বসানো", "ভাঙল", "ভাঙতে", "ভেঙে", "কবিগান", "কবিয়াল",
                   "জলসা", "মেলার", "মেলায়", "গল্প", "নাচ", "বাউল", "সাহিত্য", "তবলা", "সংগীত", "কাওয়ালি", "দর্শক",
                   "শ্রোতা", "পুঁথি", "উপস্থাপক", "মাতিয়ে", "মাতানো", "হারমোনিয়াম")
-CUE_WINDOW = 4                                      # words on each side, within the same sentence
+CUE_WINDOW = int(os.environ.get("HG_ASR_WINDOW", "4"))   # words on each side, within the same sentence
+ASR_RULE_ON = os.environ.get("HG_ASR_RULE", "1") != "0"   # HG_ASR_RULE=0 switches the safety net off
 
 
 def asr_rule(sentence, tag="<hg>"):
     """For a sentence with ONE tag on a আসর-family word -> ("1" or "2", cue word); (None, '') if the rule
     does not apply (other word, no cue, or cues of both kinds)."""
     parts = sentence.split(tag)
-    if len(parts) != 2:
+    if not ASR_RULE_ON or len(parts) != 2:
         return None, ""
     m = _WORD.match(parts[1])
     if not m or m.group(0) not in ASR_FAMILY:
