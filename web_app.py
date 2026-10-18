@@ -23,6 +23,13 @@ Settings (environment variables, docker-compose.yml sets them):
                       used only when gemma_training/data/config.json does not exist)
   HG_SHARE=1          also print a temporary public gradio.live link
   HG_FAKE=1           stand-in models, no download, only to check the page
+  HG_HOST             address to listen on                                (default: 127.0.0.1; Docker: 0.0.0.0)
+  HG_PORT             port of the web page                                (default: 7860)
+  HG_DEFAULT_MODEL    model picked when the page opens: gemma or sahajbert (default: gemma)
+  HG_MAX_TAGS         <hg> tags corrected per sentence                     (default: 2, what the models were trained on)
+  HG_ASR_RULE=0       switch off the keyword safety net for আসর/আসরে/আসরের (default: 1, on)
+  HG_ASR_WINDOW       words on each side the safety net looks at          (default: 4)
+All of them are listed in .env.example.
 """
 import contextlib, csv, html, os, re, sys, tempfile, threading, time
 from pathlib import Path
@@ -60,6 +67,9 @@ from src import config as sahaj_config
 GEMMA_HG = "Gemma 3 270M (<hg> = homograph, no tag = normal chat)"
 SAHAJ = "sahajBERT homograph classifier"
 CHOICES = [GEMMA_HG, SAHAJ]
+DEFAULT_CHOICE = SAHAJ if os.environ.get("HG_DEFAULT_MODEL", "gemma").strip().lower() == "sahajbert" else GEMMA_HG
+HOST = os.environ.get("HG_HOST") or os.environ.get("GRADIO_SERVER_NAME") or "127.0.0.1"
+PORT = int(os.environ.get("HG_PORT") or os.environ.get("PORT") or "7860")
 
 
 def adapter_found():
@@ -434,11 +444,11 @@ with gr.Blocks(title="Bangla homograph demo") as demo:
         f"Put `{TAG}` right before the homograph (no space), for example `তুমি {TAG}কেন এত দেরি করলে?`. "
         f"A sentence with `{TAG}` is converted by the homograph model (the tag is removed and the word is "
         "replaced by its pronunciation spelling). A sentence without the tag gets the model's normal behaviour. "
-        f"Up to {MAX_TAGS} `{TAG}` per sentence are corrected; from a third `{TAG}` on, the rest of the sentence is kept as typed but without the `{TAG}` tags. "
+        f"Up to {MAX_TAGS} `{TAG}` per sentence are corrected; from tag {MAX_TAGS + 1} on, the rest of the sentence is kept as typed but without the `{TAG}` tags. "
         "Many at once: put one sentence per line. "
         "Each sentence shows the time it took, and all results can be downloaded as a CSV.\n\n" + model_status())
     with gr.Row():
-        model = gr.Dropdown(CHOICES, value=GEMMA_HG, label="Model")
+        model = gr.Dropdown(CHOICES, value=DEFAULT_CHOICE, label="Model")
     gr.Markdown("**The 8 homograph words:** " + " &nbsp;·&nbsp; ".join(f"**{w}** ({_LEX[w]['1']['bangla_phoneme']} / {_LEX[w]['2']['bangla_phoneme']})" for w in HOMOGRAPHS))
     text = gr.Textbox(label="Sentence(s), one per line", lines=5)
     btn = gr.Button("Run", variant="primary")
@@ -452,6 +462,5 @@ with gr.Blocks(title="Bangla homograph demo") as demo:
     btn.click(run, [text, model], [out, shown, table, status, download])
 
 if __name__ == "__main__":
-    print("\nOpen http://localhost:7860 in your browser.\n", flush=True)
-    demo.queue().launch(server_name=os.environ.get("GRADIO_SERVER_NAME", "127.0.0.1"),
-                        server_port=int(os.environ.get("PORT", "7860")), share=SHARE)
+    print(f"\nOpen http://localhost:{PORT} in your browser.\n", flush=True)
+    demo.queue().launch(server_name=HOST, server_port=PORT, share=SHARE)
