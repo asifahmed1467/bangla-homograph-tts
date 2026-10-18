@@ -4,6 +4,7 @@ Run:  python evaluate_2tag.py --model model --out before_2tag.csv        (old mo
       python evaluate_2tag.py --model model_2tag --out after_2tag.csv    (new model)
 """
 import argparse, csv, sys, time
+import os
 from collections import defaultdict
 from pathlib import Path
 
@@ -14,7 +15,7 @@ from src.common import read_csv
 from predict_sentence import Predictor
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--model", default=str(HERE / "model_2tag"))
+ap.add_argument("--model", default=os.environ.get("HG_SAHAJBERT_MODEL") or str(HERE / "model_2tag"))
 ap.add_argument("--test", default=str(HERE.parent / "gemma_training" / "two_tag_test.csv"))
 ap.add_argument("--lexicon", default=str(HERE / "data" / "lexicon.json"))
 ap.add_argument("--out", default="predictions_2tag.csv")
