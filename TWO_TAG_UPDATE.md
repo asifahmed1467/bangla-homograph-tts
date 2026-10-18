@@ -1,3 +1,11 @@
+# UPDATE v3 (আসর fix: keyword safety net + 106 new training rows)
+- Problem seen: the আসর family (আসর, আসরে, আসরের) was mostly wrong at the start of a sentence; the models lean on the word just before the tag.
+- `gemma_training/two_tags.py` has `asr_rule`: cue words within 4 words of a tagged আসর/আসরে/আসরের (same sentence) decide the reading when only one kind is present. Prayer cues: নামাজ, ওয়াক্ত, আজান, জামাত, মসজিদ, অজু, মুসল্লি, ইমাম, মুয়াজ্জিন, রাকাত, কাজা, or পর/পরে/আগে/সময় right after the word. Gathering cues: গান, গজল, কবিতা, আড্ডা, জমে/জমাতে, মঞ্চ, শিল্পী, বসেছিল/বসল/বসবে, ভাঙল, জলসা, মেলার, গল্প, বাউল, শ্রোতা, পুঁথি, তবলা and similar. Both kinds or none: the model decides.
+- `web_app.py` applies it to sahajBERT and Gemma answers; the "what happened" column says "keyword rule: ... (because of '...')" when it changed a word.
+- Checked: all 8 আসর words in the user's last results CSV come out right; on the existing 2-tag train+test rows the rule fired 76 times and agreed with the label every time.
+- `two_tag_train.csv` now has 311 rows (205 v2 + 106 new: 90 আসর-family rows, 15 per form and reading, half sentence-initial, prayer mostly without নামাজ right next to it; plus 16 extra কেবলা/কেন pairs). `two_tag_train_v2.csv` is the previous version. `two_tag_test.csv` is unchanged.
+- Retrain: Gemma `python prepare_two_tag.py` then `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v3`; sahajBERT `python prepare_2tag.py` then `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`.
+
 # UPDATE v2 (more varied data, 7 epochs)
 - `two_tag_train.csv` now has **205** two-tag sentences (103 from v1 + 102 new, in more varied shapes, 95 call-center / e-commerce style). The v1 file is kept as `two_tag_train_v1.csv`.
 - `two_tag_test.csv` now has **30** held-out sentences: the 20 from v1 + 10 hand-made ones (ids `th001` to `th010`) that were checked against all project files. Never trained on. Old scores (20 sentences) and new scores (30 sentences) are not directly comparable.
