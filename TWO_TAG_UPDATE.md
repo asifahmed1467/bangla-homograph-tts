@@ -7,7 +7,7 @@
 - Retrain: Gemma `python prepare_two_tag.py` then `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v3`; sahajBERT `python prepare_2tag.py` then `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`.
 
 # UPDATE v2 (more varied data, 7 epochs)
-- `two_tag_train.csv` now has **205** two-tag sentences (103 from v1 + 102 new, in more varied shapes, 95 call-center / e-commerce style). The v1 file is kept as `two_tag_train_v1.csv`.
+- `two_tag_train.csv` now has **205** two-tag sentences (103 from v1 + 102 new, in more varied shapes, 95 call-center / e-commerce style).
 - `two_tag_test.csv` now has **30** held-out sentences: the 20 from v1 + 10 hand-made ones (ids `th001` to `th010`) that were checked against all project files. Never trained on. Old scores (20 sentences) and new scores (30 sentences) are not directly comparable.
 - Defaults changed: 16 two-tag sentences go to validation.
 - Epochs: the user asked for 7 (from 5). Commands: Gemma `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v2`; sahajBERT `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v2`.
@@ -47,12 +47,12 @@ About 100 two-tag sentences is small. Expect roughly a third to two thirds of th
 The sentences were written by Claude. A native speaker should check each sentence and its readings (`reading_1`, `reading_2`).
 Readings: আসর/আসরে/আসরের 1 = gathering (আশর…), 2 = Asr prayer · আসল 1 = genuine (আশল), 2 = came (আশলো) · কর 1 = tax, 2 = do! (করো) · করাত 1 = saw, 2 = made someone do (করাতো) · কেন 1 = why (ক্যানো), 2 = buy! (কেনো) · কেবলা 1 = qibla, 2 = silly (ক্যাবলা)
 
-## Steps (Windows cmd, venv on), epochs never above 5
+## Steps (Windows cmd, venv on)
 1. Back up, copy files in (see table).
 2. `cd gemma_training` → `python prepare_two_tag.py`
-3. `python train_cpu.py --epochs 5 --out gemma_cpu_lora_2tag`
-4. `python evaluate_cpu.py --adapter gemma_cpu_lora_2tag --out after_2tag.csv`
+3. `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v3`
+4. `python evaluate_cpu.py --adapter gemma_cpu_lora_2tag_v3 --out after_2tag.csv`
 5. `cd ..\sahajbert` → `python prepare.py` → `python prepare_2tag.py`
-6. `python train.py --data data/processed_2tag.csv --epochs 5 --out model_2tag`
-7. `python evaluate_2tag.py --model model_2tag --out after_2tag.csv`
+6. `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`
+7. `python evaluate_2tag.py --model model_2tag_v3 --out after_2tag.csv`
 8. Swap the new models into `models\` (old ones kept as backups), then `docker compose build` and `docker compose up`.

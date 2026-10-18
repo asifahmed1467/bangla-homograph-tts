@@ -6,7 +6,7 @@ exactly as it will be typed). The old rows from prepare.py are kept, so one-tag 
 
 Run (after python prepare.py):  python prepare_2tag.py
 In : data/processed.csv (from prepare.py), ../gemma_training/two_tag_train.csv
-Out: data/processed_2tag.csv   (then: python train.py --data data/processed_2tag.csv --epochs 5 --out model_2tag)
+Out: data/processed_2tag.csv   (then: python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3)
 """
 import argparse, csv, json, random, sys
 from pathlib import Path

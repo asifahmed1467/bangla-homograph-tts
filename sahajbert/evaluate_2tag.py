@@ -1,7 +1,7 @@
 """Score a sahajBERT model on the held-out two-tag sentences (never used in training).
 
 Run:  python evaluate_2tag.py --model model --out before_2tag.csv        (old model, for comparison)
-      python evaluate_2tag.py --model model_2tag --out after_2tag.csv    (new model)
+      python evaluate_2tag.py --model model_2tag_v3 --out after_2tag.csv    (new model)
 """
 import argparse, csv, sys, time
 import os
@@ -15,7 +15,7 @@ from src.common import read_csv
 from predict_sentence import Predictor
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--model", default=os.environ.get("HG_SAHAJBERT_MODEL") or str(HERE / "model_2tag"))
+ap.add_argument("--model", default=os.environ.get("HG_SAHAJBERT_MODEL") or str(HERE / "model_2tag_v3"))
 ap.add_argument("--test", default=str(HERE.parent / "gemma_training" / "two_tag_test.csv"))
 ap.add_argument("--lexicon", default=str(HERE / "data" / "lexicon.json"))
 ap.add_argument("--out", default="predictions_2tag.csv")
