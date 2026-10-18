@@ -12,8 +12,8 @@ from common import TAG, messages, load_jsonl, score_rows
 from two_tags import rewrite_max_two
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--model", default="unsloth/gemma-3-270m-it", help="base model (ignored when --adapter has base_model.txt)")
-ap.add_argument("--adapter", help="folder made by train_cpu.py; leave out to test the original model")
+ap.add_argument("--model", default=os.environ.get("HG_GEMMA_BASE", "unsloth/gemma-3-270m-it"), help="base model (ignored when --adapter has base_model.txt)")
+ap.add_argument("--adapter", default=os.environ.get("HG_GEMMA_ADAPTER") or None, help="folder made by train_cpu.py; leave out to test the original model")
 ap.add_argument("--test", default="data/test.jsonl")
 ap.add_argument("--out", default="predictions.csv")
 ap.add_argument("--sentence")

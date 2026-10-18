@@ -16,10 +16,10 @@ from peft import LoraConfig, get_peft_model
 from common import MAX_SEQ_LEN, messages, load_jsonl
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--model", default="unsloth/gemma-3-270m-it")   # same weights as google/gemma-3-270m-it, no login needed
-ap.add_argument("--epochs", type=float, default=2)
-ap.add_argument("--batch", type=int, default=4)
-ap.add_argument("--out", default="gemma_cpu_lora")
+ap.add_argument("--model", default=os.environ.get("HG_GEMMA_BASE", "unsloth/gemma-3-270m-it"))   # same weights as google/gemma-3-270m-it, no login needed
+ap.add_argument("--epochs", type=float, default=float(os.environ.get("HG_GEMMA_EPOCHS", "2")))
+ap.add_argument("--batch", type=int, default=int(os.environ.get("HG_GEMMA_BATCH", "4")))
+ap.add_argument("--out", default=os.environ.get("HG_GEMMA_OUT", "gemma_cpu_lora"))
 ap.add_argument("--max_steps", type=int, default=-1, help="code check: stop after this many steps (e.g. 10)")
 a = ap.parse_args()
 
