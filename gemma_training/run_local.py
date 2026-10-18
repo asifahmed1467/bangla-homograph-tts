@@ -7,11 +7,9 @@
 3. In a second terminal:
        python run_local.py "আসর নামাজের পর আমরা বাজারে যাব।"
        python run_local.py --file sentences.txt        (one sentence per line, writes sentences_fixed.txt)
-       python run_local.py --test data/test.jsonl --out local_after.csv
-                                                       (score the local model on the held-out test sentences)
 """
 import argparse, json, urllib.request
-from common import INSTRUCTION, TAG, strip_tags, load_jsonl, score_rows
+from common import INSTRUCTION, TAG, strip_tags
 from two_tags import rewrite_max_two
 
 URL = "http://127.0.0.1:8080/v1/chat/completions"
@@ -36,12 +34,8 @@ def rewrite(sentence):
 ap = argparse.ArgumentParser()
 ap.add_argument("sentence", nargs="?")
 ap.add_argument("--file")
-ap.add_argument("--test", help="data/test.jsonl: score the model that llama-server is running")
-ap.add_argument("--out", default="local_predictions.csv")
 a = ap.parse_args()
-if a.test:
-    score_rows(load_jsonl(a.test), rewrite, a.out, label=a.out.rsplit(".", 1)[0])
-elif a.file:
+if a.file:
     out = a.file.rsplit(".", 1)[0] + "_fixed.txt"
     with open(a.file, encoding="utf-8") as f, open(out, "w", encoding="utf-8") as g:
         for line in f:

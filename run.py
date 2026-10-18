@@ -11,7 +11,7 @@ MODELS = {
         'prepare': ['prepare_data.py', '--smoke', '--csv', 'my_words_8.csv', '--test_frac', '0.2',
                     '--tag', '<hg>', '--tag_mode', 'trigger'],
         'train': ['train_cpu.py', '--epochs', '3'],
-        'predict': ['evaluate_cpu.py', '--adapter', 'gemma_cpu_lora', '--sentence'],
+        'predict': ['test_examples.py', '--adapter', 'gemma_cpu_lora', '--sentence'],
         'hint': 'Type a normal sentence, e.g. আমার পেমেন্ট এখনও নিশ্চিত হচ্ছে না কেন?',
     },
     'sahajbert': {

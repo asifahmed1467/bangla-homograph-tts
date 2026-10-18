@@ -36,43 +36,33 @@ python smoke_test.py
 ```
 The first run downloads Gemma 3 270M (about 0.6 GB, no Hugging Face account needed). Then it runs these steps by itself:
 1. builds a tiny dataset (3 homograph words + 24 plain sentences, no internet needed);
-2. scores the original model on 8 test sentences;
-3. fine-tunes it with LoRA for 10 steps;
-4. reloads the saved adapter and scores it again;
-5. writes a before/after table (`smoke_comparison.md`).
+2. fine-tunes it with LoRA for 10 steps.
 
 **What "working" looks like.** The end of the output shows:
 ```
 ================ SMOKE TEST RESULT ================
 [PASS] 1. Prepare tiny dataset
-[PASS] 2. Score the ORIGINAL model
-[PASS] 3. Fine-tune (LoRA) for a few steps
-[PASS] 4. Reload the saved adapter and score it
-[PASS] 5. Before/after table
+[PASS] 2. Fine-tune (LoRA) for a few steps
 [PASS] data files written
 [PASS] adapter files saved
 [PASS] loss went down (x.xx -> y.yy)
-[PASS] predictions file written (8 sentences)
 ====================================================
 ALL CHECKS PASSED: the fine-tuning code works on this PC.
 ```
 In plain words, the code works when:
 - every step finishes without a red error;
 - the training **loss goes down** (the model is learning from your data);
-- the adapter files are saved in `smoke_lora/` (`adapter_config.json` and `adapter_model.safetensors`);
-- the saved adapter loads again and writes predictions to `smoke_after.csv`.
+- the adapter files are saved in `smoke_lora/` (`adapter_config.json` and `adapter_model.safetensors`).
 
-The scores in the table after 10 steps are **not** meaningful yet. If a line says FAIL, copy the error text just above it and send it.
+10 steps are far too few for a good model; this only shows the code runs. If a line says FAIL, copy the error text just above it and send it.
 
 **After the check: a real (small) training on the CPU**
 ```
 python prepare_data.py --words 12
-python evaluate_cpu.py --out predictions_before.csv
 python train_cpu.py
-python evaluate_cpu.py --adapter gemma_cpu_lora --out predictions.csv
-python compare.py
+python test_examples.py --adapter gemma_cpu_lora
 ```
-This takes roughly 15 to 40 minutes on a CPU and shows whether the model really learns. For a stronger model, add `--model google/gemma-3-1b-it` to the `evaluate_cpu.py` (first one) and `train_cpu.py` lines. That one needs a free Hugging Face account: accept the licence on its page, then run `hf auth login`.
+This takes roughly 15 to 40 minutes on a CPU. For a stronger model, add `--model google/gemma-3-1b-it` to the `train_cpu.py` line. That one needs a free Hugging Face account: accept the licence on its page, then run `hf auth login`.
 
 **What fits on a CPU with 16 GB RAM**
 
@@ -91,23 +81,17 @@ This trains on a small part of the data, so the whole check takes well under an 
 2. Choose **Runtime → Change runtime type → T4 GPU**.
 3. Run the cells in order. The notebook is already in QUICK TEST mode:
    - step 4 picks 12 homograph words (about 240 sentences) plus 200 plain sentences, and keeps 15% aside as unseen test sentences;
-   - step 5 scores the **original** Gemma on those test sentences;
-   - step 6 fine-tunes for 2 epochs (a few minutes);
-   - step 7 scores the **fine-tuned** model on the same sentences;
-   - step 8 (`compare.py`) prints the before/after table and saves it as `comparison.md`.
-4. Steps 10 and 11 make the GGUF file for your PC and download it with `result.zip`.
-
-**How to read the table.** Fine-tuning worked if the fine-tuned column is clearly higher than both *Original Gemma* and *Change nothing* on homograph sentences, and plain sentences stay near 100%. *Change nothing* is a model that just copies the input. About half the readings are spelled like the input, so copying already scores some points.
+   - step 5 fine-tunes for 2 epochs (a few minutes);
+   - step 6 tries one sentence with the fine-tuned model.
+4. Steps 7 and 8 make the GGUF file for your PC and download it with `result.zip`.
 
 **B. On your own PC (running the model)**
 1. Unzip `result.zip` into this `gemma_training` folder. It holds `data/` with the test sentences and your settings.
 2. Install llama.cpp: `winget install llama.cpp`
 3. Start your fine-tuned model: `llama-server -m path\to\your-file.gguf -ngl 99 -c 1024` (out of memory on 4 GB? use `-ngl 20` or `-ngl 0`).
-4. In a second terminal, score it locally: `python run_local.py --test data/test.jsonl --out local_after.csv`
-5. Optional, local "before": stop the server (Ctrl+C), start the original model with `llama-server -hf unsloth/gemma-4-E2B-it-GGUF:Q4_K_M -ngl 99 -c 1024`, and run `python run_local.py --test data/test.jsonl --out local_before.csv`.
-6. `python compare.py --before local_before.csv --after local_after.csv` shows the same before/after table, now from your own PC.
+4. In a second terminal: `python run_local.py "আসর নামাজের পর আমরা বাজারে যাব।"`
 
-When the quick test looks good, run the FULL lines in notebook steps 4 and 6.
+When the quick test looks good, run the FULL lines in notebook steps 4 and 5.
 
 ## Try the trained model: web page and example tests
 
@@ -188,16 +172,10 @@ Watch the printed `eval_loss`. It should go down. If it goes up again in the las
 ### Step 4. Test
 
 ```bash
-python evaluate.py
-python evaluate.py --sentence "আসর নামাজের পর আমরা বাজারে যাব।"
+python test_examples.py --adapter gemma_homograph_lora --sentence "আসর নামাজের পর আমরা বাজারে যাব।"
 ```
 
-It prints two numbers. Both matter:
-- **homograph sentences fixed correctly**: the model chose the right reading.
-- **plain sentences left unchanged**: the model did not damage normal text.
-
-Every prediction is saved in `predictions.csv`, so you can see which words it gets wrong.
-Tip: run `python evaluate.py --adapter unsloth/gemma-4-E2B-it` once before training. That scores the untrained model, so you can see how much training helped.
+It prints the sentence with the homograph respelled.
 
 ## If something goes wrong
 

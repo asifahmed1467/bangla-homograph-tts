@@ -59,7 +59,7 @@ python smoke_test.py
 
 python prepare_data.py --smoke --csv my_words_8.csv --test_frac 0.2 --tag "<hg>" --tag_mode trigger
 python train_cpu.py --epochs 3
-python evaluate_cpu.py --adapter gemma_cpu_lora --sentence "..."
+python test_examples.py --adapter gemma_cpu_lora --sentence "..."
 ```
 
 Try the trained model in a browser with `python app.py`, or check example sentences with `python test_examples.py` (see `gemma_training/README.md`, section "Try the trained model"). Put your `gemma_cpu_lora` folder next to the scripts first.
@@ -90,8 +90,8 @@ Every setting can be changed with an environment variable, so nobody has to edit
 | `HG_SHARE` | `0` | `1` also prints a temporary public gradio.live link |
 | `HG_FAKE` | `0` | `1` gives stand-in answers, only to check the page |
 | `HG_MODELS_DIR` | `models/` (Docker: `/models`) | Folder holding `gemma_cpu_lora/` and `sahajbert/` |
-| `HG_GEMMA_ADAPTER` | `<models>/gemma_cpu_lora` | Gemma LoRA adapter folder (also the default `--adapter` of `evaluate_cpu.py`) |
-| `HG_SAHAJBERT_MODEL` | `<models>/sahajbert` | Trained sahajBERT folder (also the default `--model` of `sahajbert/evaluate_2tag.py`) |
+| `HG_GEMMA_ADAPTER` | `<models>/gemma_cpu_lora` | Gemma LoRA adapter folder |
+| `HG_SAHAJBERT_MODEL` | `<models>/sahajbert` | Trained sahajBERT folder |
 | `HG_GEMMA_BASE` | `unsloth/gemma-3-270m-it` | Gemma base model when the adapter has no `base_model.txt` (not used in Docker, where the base is baked in) |
 | `HG_GEMMA_EPOCHS` | `2` | Default `--epochs` of `gemma_training/train_cpu.py` |
 | `HG_GEMMA_BATCH` | `4` | Default `--batch` of `train_cpu.py` |

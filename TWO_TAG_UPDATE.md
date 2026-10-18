@@ -29,9 +29,9 @@
 | From the zip | To | New or changed |
 |---|---|---|
 | `web_app.py` | `merged_repo\` | changed (back up first) |
-| `gemma_training\common.py`, `evaluate_cpu.py`, `run_local.py` | `merged_repo\gemma_training\` | changed (back up first) |
+| `gemma_training\common.py`, `run_local.py` | `merged_repo\gemma_training\` | changed (back up first) |
 | `gemma_training\two_tags.py`, `prepare_two_tag.py`, `two_tag_train.csv`, `two_tag_test.csv` | `merged_repo\gemma_training\` | new |
-| `sahajbert\prepare_2tag.py`, `evaluate_2tag.py` | `merged_repo\sahajbert\` | new |
+| `sahajbert\prepare_2tag.py` | `merged_repo\sahajbert\` | new |
 
 ## Data
 - `two_tag_train.csv`: 103 sentences, each with 2 tagged words from the 8, both readings mixed; 49 call-center / e-commerce style (GP, Airtel, Amber IT, online orders), 54 general.
@@ -41,7 +41,7 @@
 - sahajBERT mix: old 255 train / 64 val rows, plus 190 train / 16 val rows from the two-tag sentences (2 rows per sentence).
 
 ## Honest expectation
-About 100 two-tag sentences is small. Expect roughly a third to two thirds of the 20 test sentences fully right for Gemma; per-word accuracy higher. sahajBERT is usually better at picking the reading, since it only chooses 1 or 2. The test steps give the real numbers.
+About 100 two-tag sentences is small. Expect roughly a third to two thirds of the 20 test sentences fully right for Gemma; per-word accuracy higher. sahajBERT is usually better at picking the reading, since it only chooses 1 or 2.
 
 ## Please check
 The sentences were written by Claude. A native speaker should check each sentence and its readings (`reading_1`, `reading_2`).
@@ -51,8 +51,6 @@ Readings: আসর/আসরে/আসরের 1 = gathering (আশর…), 2
 1. Back up, copy files in (see table).
 2. `cd gemma_training` → `python prepare_two_tag.py`
 3. `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v3`
-4. `python evaluate_cpu.py --adapter gemma_cpu_lora_2tag_v3 --out after_2tag.csv`
-5. `cd ..\sahajbert` → `python prepare.py` → `python prepare_2tag.py`
-6. `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`
-7. `python evaluate_2tag.py --model model_2tag_v3 --out after_2tag.csv`
-8. Swap the new models into `models\` (old ones kept as backups), then `docker compose build` and `docker compose up`.
+4. `cd ..\sahajbert` → `python prepare.py` → `python prepare_2tag.py`
+5. `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`
+6. Swap the new models into `models\` (old ones kept as backups), then `docker compose build` and `docker compose up`.
