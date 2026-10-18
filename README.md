@@ -62,9 +62,8 @@ python train_cpu.py --epochs 3
 python test_examples.py --adapter gemma_cpu_lora --sentence "..."
 ```
 
-Try the trained model in a browser with `python app.py`, or check example sentences with `python test_examples.py` (see `gemma_training/README.md`, section "Try the trained model"). Put your `gemma_cpu_lora` folder next to the scripts first.
+Try the trained model in a browser with `python web_app.py` (top folder), or check example sentences with `python test_examples.py` (see `gemma_training/README.md`, section "Try the trained model"). Put your `gemma_cpu_lora` folder next to the scripts first.
 
-For GPU training on Colab, see `gemma_training/colab_train.ipynb` and `gemma_training/README.md`.
 
 ## Two-tag update
 

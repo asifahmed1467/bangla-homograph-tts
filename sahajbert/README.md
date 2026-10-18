@@ -12,8 +12,7 @@ python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
 python -m pip install -r requirements.txt
 python prepare.py
 python train.py --epochs 5 --batch-size 8
-python predict.py --sentence "তুমি <hg>কেন এত দেরি করলে?" --output result.json
-python predict.py --input data/sample_input.json --output results.csv
+python predict_sentence.py --sentence "তুমি <hg>কেন এত দেরি করলে?"
 ```
 
 If your venv is called `venv`, use `venv\Scripts\Activate.ps1` instead. If PowerShell script execution is blocked, use `cmd.exe` with `.venv\Scripts\activate.bat`.
@@ -48,7 +47,7 @@ Base model is Apache-2.0 (check its model card); comply with NOTICE/license requ
 
 ## Important
 
-Training has **not** been executed here because the model must be downloaded and CPU training is environment-dependent. `prepare.py` can be run offline. If Bengali rendering is broken in the terminal, pass `--output results.csv` and open it in VS Code.
+Training has **not** been executed here because the model must be downloaded and CPU training is environment-dependent. `prepare.py` can be run offline. If Bengali looks broken in the terminal, run `chcp 65001` first or use the web app.
 
 ## Settings and menu (config.json, HG_* env vars, run.py)
 

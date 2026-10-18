@@ -3,7 +3,7 @@
 - `gemma_training/two_tags.py` has `asr_rule`: cue words within 4 words of a tagged আসর/আসরে/আসরের (same sentence) decide the reading when only one kind is present. Prayer cues: নামাজ, ওয়াক্ত, আজান, জামাত, মসজিদ, অজু, মুসল্লি, ইমাম, মুয়াজ্জিন, রাকাত, কাজা, or পর/পরে/আগে/সময় right after the word. Gathering cues: গান, গজল, কবিতা, আড্ডা, জমে/জমাতে, মঞ্চ, শিল্পী, বসেছিল/বসল/বসবে, ভাঙল, জলসা, মেলার, গল্প, বাউল, শ্রোতা, পুঁথি, তবলা and similar. Both kinds or none: the model decides.
 - `web_app.py` applies it to sahajBERT and Gemma answers; the "what happened" column says "keyword rule: ... (because of '...')" when it changed a word.
 - Checked: all 8 আসর words in the user's last results CSV come out right; on the existing 2-tag train+test rows the rule fired 76 times and agreed with the label every time.
-- `two_tag_train.csv` now has 311 rows (205 v2 + 106 new: 90 আসর-family rows, 15 per form and reading, half sentence-initial, prayer mostly without নামাজ right next to it; plus 16 extra কেবলা/কেন pairs). `two_tag_train_v2.csv` is the previous version. `two_tag_test.csv` is unchanged.
+- `two_tag_train.csv` now has 311 rows (205 v2 + 106 new: 90 আসর-family rows, 15 per form and reading, half sentence-initial, prayer mostly without নামাজ right next to it; plus 16 extra কেবলা/কেন pairs). `two_tag_test.csv` is unchanged.
 - Retrain: Gemma `python prepare_two_tag.py` then `python train_cpu.py --epochs 7 --out gemma_cpu_lora_2tag_v3`; sahajBERT `python prepare_2tag.py` then `python train.py --data data/processed_2tag.csv --epochs 7 --batch-size 8 --out model_2tag_v3`.
 
 # UPDATE v2 (more varied data, 7 epochs)
@@ -29,7 +29,7 @@
 | From the zip | To | New or changed |
 |---|---|---|
 | `web_app.py` | `merged_repo\` | changed (back up first) |
-| `gemma_training\common.py`, `run_local.py` | `merged_repo\gemma_training\` | changed (back up first) |
+| `gemma_training\common.py` | `merged_repo\gemma_training\` | changed (back up first) |
 | `gemma_training\two_tags.py`, `prepare_two_tag.py`, `two_tag_train.csv`, `two_tag_test.csv` | `merged_repo\gemma_training\` | new |
 | `sahajbert\prepare_2tag.py` | `merged_repo\sahajbert\` | new |
 

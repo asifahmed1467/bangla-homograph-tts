@@ -1,6 +1,6 @@
 # How training works, explained with your homograph data
 
-> **Note:** the scoring scripts (`evaluate.py`, `evaluate_cpu.py`, `compare.py`) were removed from this repo. Where this guide mentions them, it is background only. To try one sentence, run `python test_examples.py --sentence "..."`.
+> **Note:** this repo now keeps only the CPU path (`train_cpu.py`, Gemma 3 270M). The scoring scripts and the GPU/Colab files (`train.py`, `colab_train.ipynb`, `export_gguf.py`, `run_local.py`, `evaluate*.py`, `compare.py`) were removed. Where this guide mentions them, it is background only. To try one sentence, run `python test_examples.py --sentence "..."`.
 
 This guide follows one sentence of yours from the CSV to the finished model. Each section matches one step of the pipeline in [README.md](README.md).
 

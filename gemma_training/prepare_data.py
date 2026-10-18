@@ -14,7 +14,7 @@ Run:  python prepare_data.py --wiki 1500
       python prepare_data.py --wiki 1500 --tag "<hg>" --tag_mode trigger   (tag anywhere in the sentence)
       python prepare_data.py --wiki 1500 --tag "<hg>" --tag_mode before    (tag right before the homograph: "যাচ্ছ <hg>কেন?")
       python prepare_data.py --wiki 1500 --tag "<hg>" --tag_mode mark      (tag wraps the homograph word)
-The tag settings are saved in data/config.json, and train/evaluate/run_local read them from there.
+The tag settings are saved in data/config.json, and train_cpu.py, test_examples.py and the web app read them from there.
 """
 import argparse, csv, json, random, re, unicodedata
 from collections import defaultdict

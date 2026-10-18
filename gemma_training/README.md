@@ -1,4 +1,4 @@
-# Train Gemma 4 on the Bangla homograph data (beginner guide)
+# Train Gemma 3 270M on the Bangla homograph data (CPU, beginner guide)
 
 New to training? Read [HOW_TRAINING_WORKS.md](HOW_TRAINING_WORKS.md) first (Bangla version: [HOW_TRAINING_WORKS_bn.md](HOW_TRAINING_WORKS_bn.md)). It explains every step below in plain language.
 
@@ -14,13 +14,13 @@ output: আমি আজ সকালে বাজারে গিয়ে ক�
 
 The model only knows what the examples show it. That is why the training data mixes homograph sentences with plain sentences that come back unchanged.
 
-## Code check on your own PC (no GPU, no Colab): start here
+## Code check on your own PC: start here
 
 This checks that the fine-tuning **code** works from start to finish on a normal Windows PC (CPU only, 16 GB RAM). It uses tiny data and 10 training steps, so it finishes in a few minutes. It does **not** make a good model; that needs the full run.
 
 **One-time setup (Windows 11, PowerShell)**
 1. Install Python 3.12 from [python.org](https://www.python.org/downloads/windows/). On the first installer screen, tick **"Add python.exe to PATH"**.
-2. Unzip `gemma_training.zip`, for example to `F:\gemma`. You get `F:\gemma\gemma_training`, `F:\gemma\tts_readiness` and `F:\gemma\homograph_call_context`. Keep them side by side.
+2. Get the repo (for example `C:\Users\Reve\merged_repo`). `gemma_training`, `tts_readiness` and `homograph_call_context` must stay side by side.
 3. Open the `gemma_training` folder in File Explorer, click the address bar, type `powershell` and press Enter.
 4. Create an environment and install the libraries (about 5 to 10 minutes, about 1 GB download):
    ```
@@ -68,90 +68,28 @@ This takes roughly 15 to 40 minutes on a CPU. For a stronger model, add `--model
 
 | Model | Fits? | Note |
 |---|---|---|
-| Gemma 4 E2B (main pipeline) | No, needs about 20 GB to train on CPU | needs a GPU |
 | Gemma 3 270M (default here) | Yes, about 4 GB | fast enough on a CPU, weaker Bangla |
 | Gemma 3 1B | Yes, but tight | about 4 times slower |
 
-## Quick test on Google Colab (needs a Google account)
+## Try the trained model
 
-This trains on a small part of the data, so the whole check takes well under an hour.
+The web page for both models is `web_app.py` in the top folder (with or without Docker, see `README_DOCKER.md`). From the command line:
 
-**A. On Google Colab (training, because a 4 GB GPU is too small)**
-1. Go to [colab.research.google.com](https://colab.research.google.com), choose **File → Upload notebook**, and pick `colab_train.ipynb`.
-2. Choose **Runtime → Change runtime type → T4 GPU**.
-3. Run the cells in order. The notebook is already in QUICK TEST mode:
-   - step 4 picks 12 homograph words (about 240 sentences) plus 200 plain sentences, and keeps 15% aside as unseen test sentences;
-   - step 5 fine-tunes for 2 epochs (a few minutes);
-   - step 6 tries one sentence with the fine-tuned model.
-4. Steps 7 and 8 make the GGUF file for your PC and download it with `result.zip`.
-
-**B. On your own PC (running the model)**
-1. Unzip `result.zip` into this `gemma_training` folder. It holds `data/` with the test sentences and your settings.
-2. Install llama.cpp: `winget install llama.cpp`
-3. Start your fine-tuned model: `llama-server -m path\to\your-file.gguf -ngl 99 -c 1024` (out of memory on 4 GB? use `-ngl 20` or `-ngl 0`).
-4. In a second terminal: `python run_local.py "আসর নামাজের পর আমরা বাজারে যাব।"`
-
-When the quick test looks good, run the FULL lines in notebook steps 4 and 5.
-
-## Try the trained model: web page and example tests
-
-Both use the adapter folder `gemma_cpu_lora` made by `train_cpu.py`. It is not in this repo (it only exists on the PC that trained it), so copy that folder into `gemma_training/` next to `app.py`, or pass its path with `--adapter`.
-
-They follow the plan: look for a word from `my_words_8.csv` in the sentence, put `<hg>` directly in front of it, and call the model **only** if one was found. A sentence with no listed word comes back unchanged and the model is not called. The lookup is in `homograph_lookup.py`, shared by both.
-
-**Windows, step by step** (open Command Prompt):
-```bat
-cd gemma_training
-py -m venv venv
-venv\Scripts\activate
-pip install -r requirements_cpu.txt
-
-python app.py
 ```
-Then open http://127.0.0.1:7860 in your browser, type a sentence and press Run. The page shows the input sent to the model, the output, and whether the model was called. Stop it with Ctrl+C.
-
-```bat
-python test_examples.py
+python test_examples.py --adapter gemma_cpu_lora
+python test_examples.py --adapter gemma_cpu_lora --sentence "আসর নামাজের পর আমরা বাজারে যাব।"
 ```
-This runs 22 example sentences and prints PASS or FAIL for each, then a summary. Twelve come from the training CSV; ten are new sentences whose expected answers are a best guess, so a FAIL there can be a wrong expectation (this is written at the top of the file).
+The first line runs 22 example sentences and prints PASS or FAIL for each. Twelve come from the training CSV; ten are new sentences whose expected answers are a best guess, so a FAIL there can be a wrong expectation. The second line tries one sentence of your own.
 
-Other computers on the same Wi-Fi: `python app.py --lan` prints an address like http://192.168.x.x:7860 for them to open (allow Python in the Windows firewall prompt).
-
-If no listed word is found, the page switches the adapter off and plain Gemma 3 270M answers like a normal chat (the tiny model can give weak answers). The page and `python test_examples.py --sentence "..."` both do this; the 22-example table checks only the rewriting path.
-
-Options: `--adapter D:\path\to\gemma_cpu_lora` (adapter in another place), `python test_examples.py --lookup-only` (no model, checks only which sentences reach the model), `--fake` on either script (a stand-in that is **not** Gemma, only to check the page and script without an adapter). The first run downloads the base model `unsloth/gemma-3-270m-it` (needs internet), and if `data/config.json` is missing it assumes the `<hg>` tag was used with `--tag_mode before`.
+Both look for a word from `my_words_8.csv`, put `<hg>` directly in front of it, and call the model **only** if one was found (`homograph_lookup.py`). With no listed word, plain Gemma 3 270M answers like a normal chat. `--lookup-only` checks only the word lookup, without a model.
 
 The trained words are only: আসর, আসরে, আসরের, আসল, কর, করাত, কেন, কেবলা. Other homographs are not looked up.
 
-## What you need
+## Build the training files yourself
 
-| Thing | Needed |
-|---|---|
-| GPU | NVIDIA, 8 GB VRAM or more (RTX 3060/4060 and up). 16 GB+ lets you use the bigger E4B model. **4 GB cards such as the GTX 1050 Ti are too small**, so use Colab. |
-| OS | Linux, or Windows with **WSL2** (Ubuntu). WSL2 is the easiest route on Windows. |
-| Python | 3.10 to 3.12 |
-| Disk | about 20 GB free (model download + checkpoints) |
-| Hugging Face account | free; accept the Gemma licence on the model page once, then run `hf auth login` |
+Go into the `gemma_training` folder, then:
 
-Less than 8 GB of VRAM, or no NVIDIA GPU? Open `colab_train.ipynb` in [Google Colab](https://colab.research.google.com) (File → Upload notebook). It runs every step below on a free T4 GPU (15 GB), and you only need a browser.
-
-## The 4 steps
-
-### Step 1. Set up Python (once)
-
-```bash
-python -m venv gemma-env
-source gemma-env/bin/activate            # on Windows PowerShell: gemma-env\Scripts\activate
-pip install torch --index-url https://download.pytorch.org/whl/cu124
-pip install -r requirements.txt
-python -c "import torch; print(torch.cuda.is_available())"    # must print True
 ```
-
-### Step 2. Build the training files
-
-Unzip `gemma_training.zip`. It already holds the scripts and the data folders in the right layout. Go into the `gemma_training` folder, then:
-
-```bash
 python prepare_data.py --wiki 1500
 ```
 
@@ -159,31 +97,14 @@ This reads `tts_readiness/train_ready_rows.csv` (1,880 checked sentences, 95 wor
 Want a tag in the sentence (for example `<hg>`)? Add `--tag "<hg>" --tag_mode trigger` (tag anywhere), `--tag_mode before` (tag right before the homograph, e.g. `যাচ্ছ <hg>কেন?`) or `--tag_mode mark` (tag around the homograph word). Avoid `. , ! / @` as tags. Full explanation in Bangla: [TAG_GUIDE_bn.md](TAG_GUIDE_bn.md).
 Have your own plain sentences? Use `--plain_file my_sentences.txt` (one per line) instead of, or as well as, `--wiki`.
 
-### Step 3. Train
-
-```bash
-python train.py
-```
-
-It downloads Gemma 4 E2B, loads it in 4-bit, and trains small LoRA layers on top. The original model is not changed, so it keeps its general Bangla knowledge. Expect roughly 15 to 40 minutes on a mid-range GPU. The result is a small folder `gemma_homograph_lora/`.
-
-Watch the printed `eval_loss`. It should go down. If it goes up again in the last epoch, set `num_train_epochs=2`.
-
-### Step 4. Test
-
-```bash
-python test_examples.py --adapter gemma_homograph_lora --sentence "আসর নামাজের পর আমরা বাজারে যাব।"
-```
-
-It prints the sentence with the homograph respelled.
+For the two-tag data, use `python prepare_two_tag.py` instead (see `TWO_TAG_UPDATE.md` in the top folder).
 
 ## If something goes wrong
 
 | Problem | Fix |
 |---|---|
-| `CUDA out of memory` | In `train.py` set `per_device_train_batch_size=4` (or 2) and `gradient_accumulation_steps=4` (or 8). |
-| `torch.cuda.is_available()` prints False | The NVIDIA driver or the CUDA build of torch is missing. Reinstall torch with the `--index-url` line above. |
-| 401 / gated repo error | Accept the Gemma licence on Hugging Face and run `hf auth login`. |
+| Out of memory while training | Use a smaller batch: `python train_cpu.py --batch 2` (or set `HG_GEMMA_BATCH=2`). |
+| 401 / gated repo error | Only for `google/...` models: accept the Gemma licence on Hugging Face and run `hf auth login`. The default `unsloth/gemma-3-270m-it` needs no login. |
 | Model changes words it should not | Add more plain sentences (`--wiki 3000`). |
 | Model is wrong on one word | That word needs more and more varied sentences (see `tts_readiness/word_status.csv`, column `contexts_to_add`). |
 
@@ -192,15 +113,4 @@ It prints the sentence with the homograph respelled.
 - **The model copies your labels.** If a sentence in the CSV has the wrong reading, the model learns the mistake. 40 words are still marked for a native-speaker check in `word_status.csv`.
 - **It will not learn words that are not in the data.** A homograph it never saw will most likely be left unchanged.
 - **Only the 95 TRAIN_READY words are used.** When you fix more words, regenerate `train_ready_rows.csv` or point `--csv` at your own file with the columns `homograph, pronunciation_variant, sentence_homograph_form, sentence_tts`.
-- The settings for model name and sequence length are in `common.py`.
-
-## Run the trained model on your own PC (works on a GTX 1050 Ti)
-
-Running needs much less memory than training. The Colab notebook's step 9 runs `export_gguf.py`, which makes one file of about 3 GB in the GGUF format, and step 10 downloads it. Then, on your PC:
-
-1. Install llama.cpp: `winget install llama.cpp` (Windows) or `brew install llama.cpp` (Mac).
-2. Start the model: `llama-server -m path\to\your-file.gguf -ngl 99 -c 1024`
-   - `-ngl 99` puts the whole model on the GPU. If you get *out of memory* on a 4 GB card, use `-ngl 20` (part GPU, part CPU) or `-ngl 0` (CPU only, slower but works).
-3. In a second terminal, from this folder: `python run_local.py "আসর নামাজের পর আমরা বাজারে যাব।"`, or `python run_local.py --file sentences.txt` for a whole file.
-
-You can also open http://127.0.0.1:8080 in a browser and chat with it there. Paste the instruction from `common.py` before the sentence, because the model was trained with it.
+- The prompt and tag settings are in `common.py`. The web app reads the same file, so keep them in step with the adapter you trained.

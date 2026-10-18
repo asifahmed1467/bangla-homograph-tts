@@ -3,7 +3,7 @@
 The model is trained on sentences with 0, 1 or 2 tags. When a sentence has 3 or more, the first two tagged
 words are corrected and everything from the third tag onward comes back exactly as it was typed, only without
 the <hg> tags (the word after a 3rd or later tag is NOT respelled).
-This is done here in code, so it holds whatever the model does. Used by web_app.py and run_local.py.
+This is done here in code, so it holds whatever the model does. Used by web_app.py.
 """
 import os
 
