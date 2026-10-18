@@ -63,3 +63,42 @@ def put_respellings(sentence, respellings, tag="<hg>"):
         m = _WORD.match(p)
         out.append(new + p[m.end():] if m else p)
     return "".join(out)
+
+
+# ---- keyword safety net for the আসর family (আসর, আসরে, আসরের) ----
+# reading 1 = gathering (আশর...), reading 2 = the Asr prayer (spelling unchanged).
+# The models lean on the word just before the tag, so a sentence that STARTS with আসর often comes out wrong.
+# Words near the tagged word decide when only one side's cue words are present; otherwise the model decides.
+ASR_FAMILY = {"আসর", "আসরে", "আসরের"}
+PRAYER_CUES = ("নামাজ", "নামায", "সালাত", "ওয়াক্ত", "আজান", "আযান", "জামাত", "মসজিদ", "অজু", "ওজু",
+               "মুসল্লি", "ইমাম", "জায়নামাজ", "মুয়াজ্জিন", "রাকাত", "কাজা")
+PRAYER_NEXT = ("পর", "পরে", "পরপর", "পরপরই", "আগে", "আগেই", "সময়", "সময়")   # আসরের পর / আসরের আগে / আসরের সময়
+GATHERING_CUES = ("গান", "গজল", "কবিতা", "আবৃত্তি", "আড্ডা", "জমে", "জমাতে", "জমিয়ে", "জমজমাট", "জমেছ", "মঞ্চ",
+                  "শিল্পী", "বসেছিল", "বসেছে", "বসবে", "বসল", "বসানো", "ভাঙল", "ভাঙতে", "ভেঙে", "কবিগান", "কবিয়াল",
+                  "জলসা", "মেলার", "মেলায়", "গল্প", "নাচ", "বাউল", "সাহিত্য", "তবলা", "সংগীত", "কাওয়ালি", "দর্শক",
+                  "শ্রোতা", "পুঁথি", "উপস্থাপক", "মাতিয়ে", "মাতানো", "হারমোনিয়াম")
+CUE_WINDOW = 4                                      # words on each side, within the same sentence
+
+
+def asr_rule(sentence, tag="<hg>"):
+    """For a sentence with ONE tag on a আসর-family word -> ("1" or "2", cue word); (None, '') if the rule
+    does not apply (other word, no cue, or cues of both kinds)."""
+    parts = sentence.split(tag)
+    if len(parts) != 2:
+        return None, ""
+    m = _WORD.match(parts[1])
+    if not m or m.group(0) not in ASR_FAMILY:
+        return None, ""
+    left = _re.split(r"[।?!]", parts[0])[-1].split()[-CUE_WINDOW:]
+    right = _re.split(r"[।?!]", parts[1][m.end():])[0].split()[:CUE_WINDOW]
+    words = [w.strip("।,;:!?\"'‘’“”()-–—.…") for w in left + right]
+    prayer = [w for w in words if w.startswith(PRAYER_CUES)]
+    nxt = right[0].strip("।,;:!?\"'‘’“”()-–—.…") if right else ""
+    if nxt in PRAYER_NEXT or nxt.startswith(("সময়", "সময়")):
+        prayer.append(nxt)
+    gathering = [w for w in words if w.startswith(GATHERING_CUES)]
+    if prayer and not gathering:
+        return "2", prayer[0]
+    if gathering and not prayer:
+        return "1", gathering[0]
+    return None, ""

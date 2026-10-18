@@ -50,7 +50,7 @@ if not common.TAG:                                    # no data/config.json (alw
     if TAG_MODE in ("trigger", "before"):
         common.INSTRUCTION = ""                       # same as common.py does for these modes
 from common import strip_tags
-from two_tags import MAX_TAGS, rewrite_max_two, split_at_extra_tag, one_tag_copies, put_respellings
+from two_tags import MAX_TAGS, rewrite_max_two, split_at_extra_tag, one_tag_copies, put_respellings, asr_rule
 from homograph_lookup import load_words, fake_model, fake_chat
 from prepare_data import nfc
 from predict_batch import replace_tagged              # sahajBERT; does not need torch
@@ -210,6 +210,37 @@ def keep_homograph(source, answer):
         "reading 2 is not chosen by this fallback")
 
 
+ASR_MEANING = {"1": "gathering", "2": "Asr prayer"}
+
+
+def rule_note(word, reading, cue):
+    return f"keyword rule: {word} read as {ASR_MEANING[reading]} (because of '{cue}')"
+
+
+def asr_fix_gemma(part, answer):
+    """Keyword safety net for আসর/আসরে/আসরের on Gemma's answer: when cue words near the tagged word clearly
+    point to one meaning, that word in the answer is set to the matching spelling. -> (answer, [notes])"""
+    plain = part.replace(TAG, "").split()
+    out = answer.split()
+    notes = []
+    if len(out) != len(plain):                      # the model added or dropped words: positions unknown, skip
+        return answer, notes
+    for copy in one_tag_copies(part, TAG):
+        reading, cue = asr_rule(copy, TAG)
+        if not reading:
+            continue
+        i = len(copy.split(TAG)[0].split())         # position of the tagged word
+        word = _TAGGED_WORD.search(copy).group(1)
+        m = re.match(r"[\u0980-\u09ff]+", out[i])
+        forms = {word} | {v["bangla_phoneme"] for v in _LEX[word].values()}
+        if m and m.group(0) in forms:
+            new = _LEX[word][reading]["bangla_phoneme"]
+            if m.group(0) != new:
+                out[i] = new + out[i][m.end():]
+                notes.append(rule_note(word, reading, cue))
+    return " ".join(out), notes
+
+
 EXTRA_NOTE = f"more than {MAX_TAGS} <hg>: the first {MAX_TAGS} were corrected, the rest is kept as typed (the extra <hg> tags are removed, those words are not respelled)"
 
 
@@ -223,19 +254,21 @@ def run_gemma(lines):
             if not adapter_found() and not FAKE:
                 rows.append([s, s, "", MISSING_ADAPTER, 0])
                 continue
-            warns = []
+            warns, rules = [], []
 
             def convert(part):                     # one model call for a line with at most 2 tags
                 answer, warn = keep_homograph(part, gemma.rewrite(gemma_prompt(part)))
                 if warn:
                     warns.append(warn)
+                answer, fixes = asr_fix_gemma(part, answer)
+                rules.extend(fixes)
                 return answer
 
             answer = rewrite_max_two(s, convert, TAG)
             note = "<hg> found: homograph adapter converted it"
             if split_at_extra_tag(s, TAG)[1]:
                 note += ". " + EXTRA_NOTE
-            row = [s, s, answer, note + (". Note: " + warns[0] if warns else "")]
+            row = [s, s, answer, note + "".join(". " + r for r in rules) + (". Note: " + warns[0] if warns else "")]
         else:
             row = [s, s, gemma.chat(s), "no <hg>: adapter off, plain Gemma answered normally"]
         rows.append(row + [round(1000 * (time.perf_counter() - t))])
@@ -278,8 +311,17 @@ def run_sahaj(lines):
             t = time.perf_counter()
             sahaj.get().predict(copies, sahaj.cfg["batch_size"])        # this line alone, only to time it
             own_ms = round(1000 * (time.perf_counter() - t))
-            answer = " ".join((put_respellings(head, [r["bangla_phoneme"] for r in got], TAG) + " " + tail).split())
-            note = "reading " + " + ".join(str(r["pronunciation_variant"]) for r in got)
+            readings = [str(r["pronunciation_variant"]) for r in got]
+            spell = [r["bangla_phoneme"] for r in got]
+            rules = []
+            for j, copy in enumerate(copies):         # keyword safety net for the আসর family
+                reading, cue = asr_rule(copy, TAG)
+                if reading and reading != readings[j]:
+                    word = _TAGGED_WORD.search(copy).group(1)
+                    readings[j], spell[j] = reading, _LEX[word][reading]["bangla_phoneme"]
+                    rules.append(rule_note(word, reading, cue))
+            answer = " ".join((put_respellings(head, spell, TAG) + " " + tail).split())
+            note = "reading " + " + ".join(readings) + "".join(". " + r for r in rules)
             if tail:
                 note += ". " + EXTRA_NOTE
             rows[i] = [lines[i], "\n".join(copies), answer, note, own_ms]
